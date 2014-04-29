@@ -1,14 +1,21 @@
-#Source_Query_Panel
+#Gameserver_Query_Panel
 
 
 ##Description
-Source Query Panel for PHP-Fusion 7.02.X
+Gameserver Query Panel for PHP-Fusion 7.02.X
 
 
 ##Utilises
-PHP Source Query (https://github.com/gries/PHP-Source-Query-Class)
+GameQ (https://github.com/Austinb/GameQ)
+
+##Requirements
+*  PHP 5.2 (Recommended 5.3, 5.4)
+
+Extras you might need:
+* Bzip2 - Used for A2S compressed responses (http://www.php.net/manual/en/book.bzip2.php)
+* Zlib - Used for AA3 (before version 3.2) compressed responses (http://www.php.net/manual/en/book.zlib.php)
 
 
 ## License
-> *This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License.<br>
-> To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/3.0/*
+> *GNU GENERAL PUBLIC LICENSE Version 3
+>  see LICENSE for more information*
