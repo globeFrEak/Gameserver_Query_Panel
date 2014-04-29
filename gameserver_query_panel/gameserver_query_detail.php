@@ -37,7 +37,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
                 WHERE active ='1' ORDER BY sort");
 }
 if ($rows === 1) {
-    opentable($locale['sqp_title']);
+    opentable($locale['gqp_title']);
     $data = dbarray($result);
     $Timer = MicroTime(true);
     $Query = new SourceQuery( );
@@ -78,7 +78,7 @@ if ($rows === 1) {
     }
     closetable();
 } elseif ($rows > 1) {
-    opentable($locale['sqp_title']);
+    opentable($locale['gqp_title']);
     while ($data = dbarray($result)) {
         $i++;
         $Timer = MicroTime(true);

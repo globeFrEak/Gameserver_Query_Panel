@@ -36,7 +36,7 @@ $inf_developer = "globeFrEak";
 $inf_email = "globefreak@web.de";
 $inf_weburl = "http://www.cwclan.de";
 
-$inf_folder = "source_query_panel"; 
+$inf_folder = "gameserver_query_panel"; 
 
 $inf_newtable[1] = DB_GQP_MAIN . "(
 id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -54,7 +54,7 @@ $inf_droptable[1] = DB_GQP_MAIN;
 $inf_adminpanel[1] = array(
     "title" => $locale['gqp_admin'],
     "image" => "image.gif",
-    "panel" => "source_query_admin.php",
+    "panel" => "gameserver_query_admin.php",
     "rights" => "GQP"
 );
 

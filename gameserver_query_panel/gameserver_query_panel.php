@@ -39,7 +39,7 @@ if (dbrows($result) != 0) {
     }
 }
 
-require INFUSIONS . "source_query_panel/GameQ/GameQ.php";
+require INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
 
 // Call the class, and add your servers.
 $gq = new GameQ();
@@ -79,7 +79,7 @@ function print_table($data, $id) {
     echo "</div>";
 }
 
-openside("<span class='icon-pacman'></span> " . $locale['sqp_title']);
+openside("<span class='icon-pacman'></span> " . $locale['gqp_title']);
 print_results($Results_GameQ);
 closeside();
 ?>

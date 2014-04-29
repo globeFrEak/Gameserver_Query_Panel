@@ -60,7 +60,7 @@ if (isset($_GET['server']) && $_GET['server'] == "del") {
     $result = dbquery("DELETE FROM " . DB_GQP_MAIN . " WHERE id='$id'");
 }
 
-opentable($locale['sqp_admin']);
+opentable($locale['gqp_admin']);
 /* * Server aus DB auslesen* */
 echo "<h4>Eingetragene Server:</h4>";
 $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " ORDER BY sort ASC");
