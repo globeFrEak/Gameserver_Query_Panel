@@ -20,6 +20,7 @@ require_once "../../maincore.php";
 require_once THEMES . "templates/admin_header.php";
 
 include INFUSIONS . "gameserver_query_panel/infusion_db.php";
+include INFUSIONS . "gameserver_query_panel/functions.php";
 
 if (!checkrights("GQP") || !defined("iAUTH") || $_GET['aid'] != iAUTH) {
     redirect(BASEDIR . "index.php");
@@ -131,9 +132,13 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<td class='tbl1'><form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>\n";
     echo "<input type='hidden' name='id' value='$id'>";
     echo "<input name='name' type='text' size='20' maxlength='50' value='$name' ></td>\n";
-    echo "<td class='tbl1'><input name='address' type='text' size='50' maxlength='50' value='$address' ></td>\n";
+    echo "<td class='tbl1'><input name='address' type='text' size='30' maxlength='50' value='$address' ></td>\n";
     echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' value='$port' ></td>\n";
-    echo "<td class='tbl1'><input name='game' type='text' size='10' maxlength='10' value='$game' ></td>\n";
+    echo "<td class='tbl1'>"
+            . "<select name='game' class='textbox' maxlength='10'>"
+            . GameQ_Games($game)
+            . "</select>"
+            . "</td>\n";
     echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3' value='$sort'></td>\n";
     if (isset($active) && $active == "1") {
         echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
@@ -159,9 +164,13 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<tr>\n";
     echo "<td class='tbl1'><form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>\n";
     echo "<input name='name' type='text' size='20' maxlength='50' value='Server Name' ></td>\n";
-    echo "<td class='tbl1'><input name='address' type='text' size='50' maxlength='50' value='Server Adresse (IP or Hostname)' ></td>\n";
+    echo "<td class='tbl1'><input name='address' type='text' size='30' maxlength='50' value='Server Adresse (IP or Hostname)' ></td>\n";
     echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' value='27015' ></td>\n";
-    echo "<td class='tbl1'><input name='game' type='text' size='10' maxlength='10' value='' ></td>\n";
+    echo "<td class='tbl1'>"
+            . "<select name='game' class='textbox' maxlength='10'>"
+            . GameQ_Games($game)
+            . "</select>"
+            . "</td>\n";
     echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3' value=''></td>\n";
     echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
     echo "</tr>\n";

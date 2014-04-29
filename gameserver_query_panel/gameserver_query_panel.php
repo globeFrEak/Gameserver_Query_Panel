@@ -72,7 +72,7 @@ function print_table($data, $id) {
     }
 
     echo "<div>";
-    echo "<h5><a href='" . INFUSIONS . "source_query_panel/source_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
+    echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
     //echo "<a href='http://store.steampowered.com/app/" . $Info['AppID'] . "/'>Link</a>";
     echo "<span><span class='icon-earth'></span> " . $data['gq_mapname'] . "</span>";
     echo "<span style='float:right'><span class='icon-users'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
