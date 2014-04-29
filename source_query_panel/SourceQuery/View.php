@@ -1,5 +1,5 @@
 <?php
-	require __DIR__ . '/SourceQuery/SourceQuery.class.php';
+	require __DIR__ . '/SourceQuery.class.php';
 	
 	// Edit this ->
 	define( 'SQ_SERVER_ADDR', 'server.cwclan.de' );

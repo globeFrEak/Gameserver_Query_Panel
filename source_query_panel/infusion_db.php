@@ -17,7 +17,7 @@
 +--------------------------------------------------------*/
 if (!defined("IN_FUSION")) { die("Access Denied"); }
 
-if (!defined("DB_QSP_MAIN")) {
-	define("DB_QSP_MAIN", DB_PREFIX."query_source_panel");
+if (!defined("DB_SQP_MAIN")) {
+	define("DB_SQP_MAIN", DB_PREFIX."source_query_panel");
 }
 ?>

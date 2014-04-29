@@ -27,56 +27,59 @@ if (file_exists(INFUSIONS . "source_query_panel/locale/" . $settings['locale'] .
 } else {
     include INFUSIONS . "source_query_panel/locale/English.php";
 }
-if (isset($_GET['server']) && preg_match("=^[0-9]+$=i", $_GET['server'])) {
-    $result = dbquery("SELECT id                            
-                            FROM " . DB_QSP_MAIN . "                                
-                                WHERE active ='1'
-                                AND id=" . $_GET['server'] . "                                    
-                                    ORDER BY sort");
-} else {
-    $result = dbquery("SELECT id
-                            FROM " . DB_QSP_MAIN . "                                
-                                WHERE active ='1'                                    
-                                    ORDER BY sort");
-}
 
 require INFUSIONS . "source_query_panel/SourceQuery/SourceQuery.class.php";
-	
-	// Edit this ->
-	define( 'SQ_SERVER_ADDR', 'localhost' );
-	define( 'SQ_SERVER_PORT', 27015 );
-	define( 'SQ_TIMEOUT',     1 );
-	define( 'SQ_ENGINE',      SourceQuery :: SOURCE );
-	// Edit this <-
-	
-	$Timer = MicroTime( true );
-	
-	$Query = new SourceQuery( );
-	
-	$Info    = Array( );
-	$Rules   = Array( );
-	$Players = Array( );
-	
-	try
-	{
-		$Query->Connect( SQ_SERVER_ADDR, SQ_SERVER_PORT, SQ_TIMEOUT, SQ_ENGINE );
-		
-		$Info    = $Query->GetInfo( );
-		$Players = $Query->GetPlayers( );
-		$Rules   = $Query->GetRules( );
-	}
-	catch( Exception $e )
-	{
-		$Exception = $e;
-	}
-	
-	$Query->Disconnect( );
-	
-	$Timer = Number_Format( MicroTime( true ) - $Timer, 4, '.', '' );
+define('SQ_TIMEOUT', 1);
+define('SQ_ENGINE', SourceQuery :: SOURCE);
 
+$result = dbquery("SELECT address, port FROM " . DB_SQP_MAIN . "                             
+                WHERE active ='1' ORDER BY sort");
+$rows = dbrows($result);
+$i = 0;
 
-opentable("<img src='" . INFUSIONS . "hlstats_server_panel/images/hlstats-icon.png' style='vertical-align: middle;'/> " . $locale['hls_100'], TRUE, "on");
+if ($rows != 0) {
+    openside("<span class='icon-pacman'></span> ".$locale['sqp_title']);
+    while ($data = dbarray($result)) {
+        $i++;
+        $Timer = MicroTime(true);
+        $Query = new SourceQuery( );
+        $Info = Array();
+        $Rules = Array();
+        $Players = Array();
 
+        try {
+            $Query->Connect($data['address'], $data['port'], SQ_TIMEOUT, SQ_ENGINE);
 
-closetable();
+            $Info = $Query->GetInfo();
+            $Players = $Query->GetPlayers();
+            $Rules = $Query->GetRules();
+        } catch (Exception $e) {
+            $Exception = $e;
+        }
+
+        $Query->Disconnect();
+
+        $Timer = Number_Format(MicroTime(true) - $Timer, 4, '.', '');
+
+        if (isset($Exception)) {
+            echo Get_Class($Exception);
+            echo $Exception->getLine();
+            echo htmlspecialchars($Exception->getMessage());
+            echo nl2br($e->getTraceAsString(), false);
+        } else {
+            if (Is_Array($Info)) {
+                //DEBUG
+                //echo print_r($Info);
+                echo "<div>";
+                echo "<h5>" . $Info['HostName'] . "</h5>";
+                //echo "<a href='http://store.steampowered.com/app/" . $Info['AppID'] . "/'>Link</a>";
+                echo "<span><span class='icon-earth'></span> " . $Info['Map'] . "</span>";
+                echo "<span style='float:right'><span class='icon-users'></span> " . $Info['Players'] . "/" . $Info['MaxPlayers'] . "</span>";
+                echo "</div>";
+                echo ($i === $rows ? "" : "<hr />");
+            }
+        }        
+    }
+    closeside();
+}
 ?>

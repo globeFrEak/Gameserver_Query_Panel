@@ -36,18 +36,18 @@ $inf_developer = "globeFrEak";
 $inf_email = "globefreak@web.de";
 $inf_weburl = "http://www.cwclan.de";
 
-$inf_folder = "source_query_panel"; // The folder in which the infusion resides.
-// Delete any items not required below.
-$inf_newtable[1] = DB_SQP_MAIN . "(
-id int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-server_id smallint(4) DEFAULT '0' NOT NULL ,
-name VARCHAR(60) DEFAULT '' ,
-sort smallint(3) DEFAULT '0' NOT NULL ,
-active smallint(1) UNSIGNED DEFAULT '1' NOT NULL ,
-PRIMARY KEY (id)
-) TYPE=MyISAM;";
+$inf_folder = "source_query_panel"; 
 
-// Tabellen Deinstallation
+$inf_newtable[1] = DB_SQP_MAIN . "(
+id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+name VARCHAR(60) DEFAULT '' ,
+address VARCHAR(60) DEFAULT '' ,
+port MEDIUMINT(6) DEFAULT '27015' ,
+sort SMALLINT(3) DEFAULT '0' NOT NULL ,
+active TINYINT(1) UNSIGNED DEFAULT '1' NOT NULL ,
+PRIMARY KEY (id)
+) ENGINE=MyISAM;";
+
 $inf_droptable[1] = DB_SQP_MAIN;
 
 $inf_adminpanel[1] = array(
