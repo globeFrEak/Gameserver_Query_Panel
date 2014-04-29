@@ -5,7 +5,7 @@
   | Copyright 2002 - 2008 Nick Jones
   | http://www.php-fusion.co.uk/
   +--------------------------------------------------------+
-  | Infusion: Source Query Panel
+  | Infusion: GamerServer Query Panel
   | Author: globeFrEak [www.cwclan.de]
   +--------------------------------------------------------+
   | This program is released as free software under the
@@ -28,58 +28,58 @@ if (file_exists(INFUSIONS . "source_query_panel/locale/" . $settings['locale'] .
     include INFUSIONS . "source_query_panel/locale/English.php";
 }
 
-require INFUSIONS . "source_query_panel/SourceQuery/SourceQuery.class.php";
-define('SQ_TIMEOUT', 1);
-define('SQ_ENGINE', SourceQuery :: SOURCE);
-
-$result = dbquery("SELECT address, port FROM " . DB_SQP_MAIN . "                             
+$Servers_GameQ = array();
+$result = dbquery("SELECT id, address, port, game FROM " . DB_SQP_MAIN . "                             
                 WHERE active ='1' ORDER BY sort");
-$rows = dbrows($result);
-$i = 0;
-
-if ($rows != 0) {
-    openside("<span class='icon-pacman'></span> ".$locale['sqp_title']);
-    while ($data = dbarray($result)) {
-        $i++;
-        $Timer = MicroTime(true);
-        $Query = new SourceQuery( );
-        $Info = Array();
-        $Rules = Array();
-        $Players = Array();
-
-        try {
-            $Query->Connect($data['address'], $data['port'], SQ_TIMEOUT, SQ_ENGINE);
-
-            $Info = $Query->GetInfo();
-            $Players = $Query->GetPlayers();
-            $Rules = $Query->GetRules();
-        } catch (Exception $e) {
-            $Exception = $e;
-        }
-
-        $Query->Disconnect();
-
-        $Timer = Number_Format(MicroTime(true) - $Timer, 4, '.', '');
-
-        if (isset($Exception)) {
-            echo Get_Class($Exception);
-            echo $Exception->getLine();
-            echo htmlspecialchars($Exception->getMessage());
-            echo nl2br($e->getTraceAsString(), false);
-        } else {
-            if (Is_Array($Info)) {
-                //DEBUG
-                //echo print_r($Info);
-                echo "<div>";
-                echo "<h5>" . $Info['HostName'] . "</h5>";
-                //echo "<a href='http://store.steampowered.com/app/" . $Info['AppID'] . "/'>Link</a>";
-                echo "<span><span class='icon-earth'></span> " . $Info['Map'] . "</span>";
-                echo "<span style='float:right'><span class='icon-users'></span> " . $Info['Players'] . "/" . $Info['MaxPlayers'] . "</span>";
-                echo "</div>";
-                echo ($i === $rows ? "" : "<hr />");
-            }
-        }        
+if (dbrows($result) != 0) {
+    for ($i = 0; $data = dbarray($result); $i++) {
+        $Servers_GameQ[$i]['id'] = $data['id'];
+        $Servers_GameQ[$i]['type'] = $data['game'];
+        $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
     }
-    closeside();
 }
+
+require INFUSIONS . "source_query_panel/GameQ/GameQ.php";
+
+// Call the class, and add your servers.
+$gq = new GameQ();
+$gq->addServers($Servers_GameQ);
+
+// You can optionally specify some settings
+$gq->setOption('timeout', 1); // Seconds
+// You can optionally specify some output filters,
+// these will be applied to the results obtained.
+$gq->setFilter('normalise');
+
+// Send requests, and parse the data
+$Results_GameQ = $gq->requestData();
+
+function print_results($results) {
+
+    foreach ($results as $id => $data) {
+        print_table($data, $id);
+    }
+}
+
+function print_table($data, $id) {
+
+    $gqs = array('gq_online', 'gq_address', 'gq_port', 'gq_prot', 'gq_type');
+
+
+    if (!$data['gq_online']) {
+        printf("<p>The server did not respond within the specified time.</p>\n");
+        return;
+    }
+
+    echo "<div>";
+    echo "<h5><a href='" . INFUSIONS . "source_query_panel/source_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
+    //echo "<a href='http://store.steampowered.com/app/" . $Info['AppID'] . "/'>Link</a>";
+    echo "<span><span class='icon-earth'></span> " . $data['gq_mapname'] . "</span>";
+    echo "<span style='float:right'><span class='icon-users'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
+    echo "</div>";
+}
+
+openside("<span class='icon-pacman'></span> " . $locale['sqp_title']);
+print_results($Results_GameQ);
+closeside();
 ?>
