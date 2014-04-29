@@ -21,6 +21,7 @@ if (!defined("IN_FUSION")) {
 }
 
 include INFUSIONS . "gameserver_query_panel/infusion_db.php";
+include INFUSIONS . "gameserver_query_panel/functions.php";
 
 if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
     include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
@@ -55,27 +56,21 @@ $gq->setFilter('normalise');
 $Results_GameQ = $gq->requestData();
 
 function print_results($results) {
-
     foreach ($results as $id => $data) {
         print_table($data, $id);
     }
 }
 
-function print_table($data, $id) {
-
-    $gqs = array('gq_online', 'gq_address', 'gq_port', 'gq_prot', 'gq_type');
-
-
+function print_table($data, $id) {        
     if (!$data['gq_online']) {
         printf("<p>The server did not respond within the specified time.</p>\n");
         return;
     }
-
     echo "<div>";    
     echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
-    echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/".$data['gq_type'].".jpg' alt='".$data['gq_type']."' height='16' width='16'/>";
+    echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/".$data['gq_type'].".jpg' alt='".GameQ_GetInfo($data['gq_type'], N)."' title='".GameQ_GetInfo($data['gq_type'], N)."' height='16' width='16'/> ";
     echo "<span><span class='icon-earth'></span> " . $data['gq_mapname'] . "</span>";
-    echo "<span style='float:right'><span class='icon-users'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
+    echo "<span style='float:right'><span class='icon-users'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";    
     echo "</div>";
 }
 

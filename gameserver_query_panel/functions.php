@@ -45,4 +45,25 @@ function GameQ_Games($select) {
     }
     return $return;
 }
+
+function GameQ_GetInfo($game, $return = 'N') {
+    require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
+    $protocols = array();
+    $class_name = 'GameQ_Protocols_' . ucfirst(pathinfo($game, PATHINFO_FILENAME));
+    $reflection = new ReflectionClass($class_name);
+    if (!$reflection->IsInstantiable()) {
+        return $game;
+    }
+    $class = new $class_name;
+    switch ($return) {
+        case N:
+            return htmlentities($class->name_long());
+            break;
+
+        case P:
+            return $class->port();
+            break;
+    }
+    unset($class);
+}
 ?>
