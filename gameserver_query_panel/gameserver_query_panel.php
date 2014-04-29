@@ -71,9 +71,9 @@ function print_table($data, $id) {
         return;
     }
 
-    echo "<div>";
+    echo "<div>";    
     echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
-    //echo "<a href='http://store.steampowered.com/app/" . $Info['AppID'] . "/'>Link</a>";
+    echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/".$data['gq_type'].".jpg' alt='".$data['gq_type']."' height='16' width='16'/>";
     echo "<span><span class='icon-earth'></span> " . $data['gq_mapname'] . "</span>";
     echo "<span style='float:right'><span class='icon-users'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
     echo "</div>";
