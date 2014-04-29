@@ -56,11 +56,11 @@ function GameQ_GetInfo($game, $return = 'N') {
     }
     $class = new $class_name;
     switch ($return) {
-        case N:
+        case 'N':
             return htmlentities($class->name_long());
             break;
 
-        case P:
+        case 'P':
             return $class->port();
             break;
     }
