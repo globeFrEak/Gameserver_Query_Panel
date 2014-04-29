@@ -18,6 +18,6 @@
 if (!defined("IN_FUSION")) { die("Access Denied"); }
 
 if (!defined("DB_GQP_MAIN")) {
-	define("DB_GQP_MAIN", DB_PREFIX."source_query_panel");
+	define("DB_GQP_MAIN", DB_PREFIX."gameserver_query");
 }
 ?>
