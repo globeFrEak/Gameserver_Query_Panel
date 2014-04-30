@@ -22,6 +22,7 @@ function GameQ_Games($select) {
     $protocols_path = GAMEQ_BASE . "gameq/protocols/";
     $dir = dir($protocols_path);
     $protocols = array();
+    $return = "";
     while (false !== ($entry = $dir->read())) {
         if (!is_file($protocols_path . $entry)) {
             continue;
@@ -39,8 +40,7 @@ function GameQ_Games($select) {
         unset($class);
     }
     unset($dir);
-    ksort($protocols);
-    $return = "";
+    ksort($protocols);    
     foreach ($protocols AS $gameq => $info) {
         $return .= "<option value='$gameq' " . ($select == $gameq ? "selected='selected'" : "") . ">" . htmlentities($info['name']) . "</option>";
     }

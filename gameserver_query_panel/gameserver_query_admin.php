@@ -42,6 +42,8 @@ $game = (isset($_POST['game']) ? mysql_real_escape_string($_POST['game']) : "");
 $sort = (isset($_POST['sort']) && is_numeric($_POST['sort']) ? mysql_real_escape_string($_POST['sort']) : "");
 $active = (isset($_POST['active']) && is_numeric($_POST['active']) ? mysql_real_escape_string($_POST['active']) : "");
 
+$error = "";
+
 if (isset($_GET['server']) && $_GET['server'] == "add") {
     if (isset($_POST['id'])) {
         $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " WHERE id = '$id'");
