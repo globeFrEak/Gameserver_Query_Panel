@@ -40,6 +40,7 @@ function GameQ_Games($select) {
     }
     unset($dir);
     ksort($protocols);
+    $return = "";
     foreach ($protocols AS $gameq => $info) {
         $return .= "<option value='$gameq' " . ($select == $gameq ? "selected='selected'" : "") . ">" . htmlentities($info['name']) . "</option>";
     }

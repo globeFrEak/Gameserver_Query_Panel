@@ -7,6 +7,7 @@ Gameserver Query Panel for PHP-Fusion 7.02.X
 
 ##Utilises
 GameQ (https://github.com/Austinb/GameQ)
+Icons (http://fortawesome.github.io/Font-Awesome/)
 
 ##Requirements
 *  PHP 5.2 (Recommended 5.3, 5.4)

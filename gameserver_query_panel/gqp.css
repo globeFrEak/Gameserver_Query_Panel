@@ -1,0 +1,58 @@
+@font-face {
+	font-family: 'gqp-icom';
+	src:url('fonts/gqp-icom.eot?-2zm241');
+	src:url('fonts/gqp-icom.eot?#iefix-2zm241') format('embedded-opentype'),
+		url('fonts/gqp-icom.woff?-2zm241') format('woff'),
+		url('fonts/gqp-icom.ttf?-2zm241') format('truetype'),
+		url('fonts/gqp-icom.svg?-2zm241#gqp-icom') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="gqp-"], [class*=" gqp-"] {
+	font-family: 'gqp-icom';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.gqp-check:before {
+	content: "\f00c";
+}
+.gqp-times:before {
+	content: "\f00d";
+}
+.gqp-gear:before {
+	content: "\f013";
+}
+.gqp-trash-o:before {
+	content: "\f014";
+}
+.gqp-lock:before {
+	content: "\f023";
+}
+.gqp-sign-in:before {
+	content: "\f090";
+}
+.gqp-globe:before {
+	content: "\f0ac";
+}
+.gqp-group:before {
+	content: "\f0c0";
+}
+.gqp-rotate-left:before {
+	content: "\f0e2";
+}
+.gqp-github-alt:before {
+	content: "\f113";
+}
+.gqp-gamepad:before {
+	content: "\f11b";
+}
