@@ -165,6 +165,7 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     . GameQ_Games($game)
     . "</select>"
     . "</td>\n";
+    echo "</td>\n";
     echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3'></td>\n";
     echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
     echo "</tr>\n";
@@ -177,5 +178,9 @@ echo "</table>\n";
 echo "</form>\n";
 closetable();
 
+//List all supported games
+opentable("Game List");
+echo GameQ_Games2();
+closetable();
 require_once(THEMES . "templates/footer.php");
 ?>

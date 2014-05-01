@@ -63,16 +63,16 @@ function print_results($results) {
     }
 }
 
-function print_table($data, $id) {        
+function print_table($data, $id) {
     if (!$data['gq_online']) {
         printf("<p>The server did not respond within the specified time.</p>\n");
         return;
     }
-    echo "<div>";    
+    echo "<div>";
     echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
     echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
     echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-    echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";    
+    echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
     echo "</div>";
 }
 
