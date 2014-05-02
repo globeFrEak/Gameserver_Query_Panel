@@ -62,9 +62,9 @@ function GameQ_Print_Detail($Servers_GameQ) {
         echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
         echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
         echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-        echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
-        echo print_r($data);
+        echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";        
         echo "</div>";
+        echo "<div>".print_r($data)."</div>";
     }
 }
 

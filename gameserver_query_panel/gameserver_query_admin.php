@@ -22,7 +22,7 @@ require_once THEMES . "templates/admin_header.php";
 include INFUSIONS . "gameserver_query_panel/infusion_db.php";
 
 if (!checkrights("GQP") || !defined("iAUTH") || $_GET['aid'] != iAUTH) {
-    redirect("index.php");
+    redirect("../../index.php");
 }
 
 include INFUSIONS . "gameserver_query_panel/functions.php";

@@ -24,45 +24,35 @@ include INFUSIONS . "gameserver_query_panel/infusion_db.php";
 
 add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
 
+add_to_head("<script type=\"text/javascript\">
+    function gqp_ajax() {
+        $.ajax({
+            url:'" . INFUSIONS . "gameserver_query_panel/ajax.php',
+            beforeSend:function(){
+                $('#gqpajax').fadeOut('slow');
+            },
+            success:function(data){
+                $('#gqpajax').html(data).fadeIn('slow');
+            },
+            dataType: 'html'
+        });
+    }    
+    jQuery(document).ready(function() {
+        $('#GQP_AjaxRel').click(function(){
+            gqp_ajax();
+        });
+        gqp_ajax();    
+    });
+</script>");
+
 if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
     include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
 } else {
     include INFUSIONS . "gameserver_query_panel/locale/English.php";
 }
 
-$Servers_GameQ = array();
-$result = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' ORDER BY sort");
-if (dbrows($result) != 0) {
-    for ($i = 0; $data = dbarray($result); $i++) {
-        $Servers_GameQ[$i]['id'] = $data['id'];
-        $Servers_GameQ[$i]['type'] = $data['game'];
-        $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
-    }
-}
-
-include_once INFUSIONS . "gameserver_query_panel/functions.php";
-
-function GameQ_Print_Panel($Servers_GameQ) {
-    $result = GameQ_Create($Servers_GameQ);
-    foreach ($result as $id => $data) {
-        if (!$data['gq_online']) {
-            print_r($data);
-            printf("<p>The server did not respond</p>\n");
-            return;
-        }
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
-        $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
-        echo "<div>";
-        echo "<h5>$password<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
-        echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-        echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-        echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
-        echo "</div>";
-    }
-}
-
 openside("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
-GameQ_Print_Panel($Servers_GameQ);
+echo "<button id='GQP_AjaxRel'>click</button>";
+echo "<div id='gqpajax'></div>";
 closeside();
 ?>

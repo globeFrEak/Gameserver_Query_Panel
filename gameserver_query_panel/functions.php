@@ -23,7 +23,7 @@ function GameQ_Create($Servers_GameQ) {
     $gq = new GameQ();
     $gq->addServers($Servers_GameQ);
 // You can optionally specify some settings
-    $gq->setOption('timeout', 1); // Seconds
+    $gq->setOption('timeout', 2); // Seconds
 // You can optionally specify some output filters,
 // these will be applied to the results obtained.
     $gq->setFilter('normalise');
