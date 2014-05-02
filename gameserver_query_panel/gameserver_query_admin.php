@@ -22,11 +22,17 @@ require_once THEMES . "templates/admin_header.php";
 include INFUSIONS . "gameserver_query_panel/infusion_db.php";
 
 if (!checkrights("GQP") || !defined("iAUTH") || $_GET['aid'] != iAUTH) {
-    redirect(BASEDIR . "index.php");
+    redirect("index.php");
 }
 
 include INFUSIONS . "gameserver_query_panel/functions.php";
 add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
+add_to_head("<script>
+$(function(){    
+    $('#gqpreset','#gqpserver').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked');    
+});
+
+</script>");
 
 if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
     include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
@@ -122,9 +128,10 @@ if (dbrows($result) != 0) {
 echo $error;
 echo "<hr class='side-hr'/>";
 
-
-echo "<h4>Server editieren:</h4>\n";
-echo "<form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
+/* * Server hinzufuegen/editieren * */
+$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='Formular zurücksetzen'></span></button></a>";
+echo "<h4>" . (isset($_GET['server']) && $_GET['server'] == "edit" ? "Server editieren ".$exit : "Server hinzufügen") . "</h4>\n";
+echo "<form id='gqpserver' name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
 echo "<table class='tbl-border forum_idx_table' cellpadding='0' cellspacing='1'>\n";
 echo "<tr>\n";
 echo "<th class='tbl2'><strong>Name</strong></th>\n";
@@ -134,7 +141,6 @@ echo "<th class='tbl2'><strong>Spiel</strong></th>\n";
 echo "<th class='tbl2'><strong>Sortierung</strong></th>\n";
 echo "<th class='tbl2'><strong>Active</strong></th>\n";
 echo "</tr>\n";
-/* * Server hinzufuegen/editieren * */
 if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<tr>\n";
     echo "<td class='tbl1'>\n";
@@ -172,14 +178,14 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
 }
 echo "<tr><td colspan='6'>";
 echo "<button type='submit'><span class='gqp-check' title='Editieren'></span></button>";
-echo "<button type='reset'><span class='gqp-times' title='Abbrechen'></span></button>";
+echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='Zurücksetzen'></span></button>";
 echo "</td></tr>\n";
 echo "</table>\n";
 echo "</form>\n";
 closetable();
 
 //List all supported games
-opentable("Game List");
+opentable("Game list - ".GameQ_Games('', 'count')." games supported");
 echo GameQ_Games();
 closetable();
 require_once(THEMES . "templates/footer.php");

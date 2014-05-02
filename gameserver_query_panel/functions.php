@@ -23,7 +23,6 @@ function GameQ_Games($select = FALSE, $option = 'list') {
     $dir = dir($protocols_path);
     $protocols = array();
     $print = "";
-    $select = "";
     while (false !== ($entry = $dir->read())) {
         if (!is_file($protocols_path . $entry)) {
             continue;
@@ -54,6 +53,9 @@ function GameQ_Games($select = FALSE, $option = 'list') {
                         . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $gameq . ".jpg' alt='" . htmlentities($info['name']) . "' title='" . htmlentities($info['name']) . "' height='32' width='32'/>"
                         . "<span>" . htmlentities($info['name']) . "</span></div>";
             }
+            break;
+        case 'count':            
+                $print = count($protocols);            
             break;
     }
     return $print;
