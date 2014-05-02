@@ -51,9 +51,11 @@ foreach ($Servers as $id => $data) {
     $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
     echo "<div>";
     echo "<h5>$password<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
-    echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
+    echo "<div><img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
     echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-    echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
+    echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
+    echo "<div><h5>IP: " . $data['gq_address'] . ":".$data['gq_port']."</h5>";
+    echo "</div>";
     echo "</div>";    
 }
 ?>
