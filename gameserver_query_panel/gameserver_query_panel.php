@@ -65,7 +65,8 @@ function print_results($results) {
 
 function print_table($data, $id) {
     if (!$data['gq_online']) {
-        printf("<p>The server did not respond within the specified time.</p>\n");
+        print_r($data);
+        printf("<p>The server did not respond</p>\n");
         return;
     }
     echo "<div>";
