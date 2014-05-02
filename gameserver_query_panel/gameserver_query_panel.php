@@ -25,23 +25,32 @@ include INFUSIONS . "gameserver_query_panel/infusion_db.php";
 add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
 
 add_to_head("<script type=\"text/javascript\">
-    function gqp_ajax() {
+    function gqp_ajax_panel() {
         $.ajax({
-            url:'" . INFUSIONS . "gameserver_query_panel/ajax.php',
+            url:'" . INFUSIONS . "gameserver_query_panel/ajax_panel.php',
             beforeSend:function(){
-                $('#gqpajax').fadeOut('slow');
+                $('#gqp_ajax_panel').fadeOut('slow');
             },
             success:function(data){
-                $('#gqpajax').html(data).fadeIn('slow');
+                $('#gqp_ajax_panel').html(data).fadeIn('slow');
             },
             dataType: 'html'
         });
-    }    
+    }
+    function gqp_ajax_panel_reload() {
+        $.ajax({
+            url:'" . INFUSIONS . "gameserver_query_panel/ajax_panel.php',            
+            success:function(data){
+                $('#gqp_ajax_panel').html(data);
+            },
+            dataType: 'html'
+        });
+    }
     jQuery(document).ready(function() {
         $('#GQP_AjaxRel').click(function(){
-            gqp_ajax();
+            gqp_ajax_panel();
         });
-        gqp_ajax();    
+        gqp_ajax_panel_reload();        
     });
 </script>");
 
@@ -53,6 +62,6 @@ if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale
 
 openside("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
 echo "<button id='GQP_AjaxRel'>click</button>";
-echo "<div id='gqpajax'></div>";
+echo "<div id='gqp_ajax_panel'></div>";
 closeside();
 ?>

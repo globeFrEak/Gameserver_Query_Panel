@@ -20,11 +20,19 @@ require_once "../../maincore.php";
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 
-$Servers_GameQ = array();
-$result = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
+// Server abfragen!
+if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] != 0) {
+    $id = mysql_real_escape_string($_GET['id']);
+    $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
+                WHERE active ='1' AND id = '$id' ORDER BY sort");
+} else {
+    $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
                 WHERE active ='1' ORDER BY sort");
-if (dbrows($result) != 0) {
-    for ($i = 0; $data = dbarray($result); $i++) {
+}
+$rows = dbrows($result_detail);
+$Servers_GameQ = array();
+if ($rows != 0) {
+    for ($i = 0; $data = dbarray($result_detail); $i++) {
         $Servers_GameQ[$i]['id'] = $data['id'];
         $Servers_GameQ[$i]['type'] = $data['game'];
         $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
@@ -33,11 +41,9 @@ if (dbrows($result) != 0) {
 
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-
 $Servers = GameQ_Create($Servers_GameQ);
 foreach ($Servers as $id => $data) {
-    if (!$data['gq_online']) {
-        print_r($data);
+    if (!$data['gq_online']) {        
         printf("<p>The server did not respond</p>\n");
         return;
     }

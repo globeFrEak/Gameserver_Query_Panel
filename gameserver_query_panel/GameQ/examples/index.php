@@ -14,10 +14,13 @@ $servers = array(
 		'id' => 'COD4',
 		'type' => 'cod4',
 		'host' => '62.104.164.101:28960',
+	),
+        array(
+		'id' => 'Saxton',
+		'type' => 'tf2',
+		'host' => '66.150.155.26:27015',
 	)
 );
-
-
 // Call the class, and add your servers.
 $gq = new GameQ();
 $gq->addServers($servers);

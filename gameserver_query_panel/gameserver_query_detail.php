@@ -29,51 +29,46 @@ if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale
     include_once INFUSIONS . "gameserver_query_panel/locale/English.php";
 }
 
-// Server abfragen!
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = mysql_real_escape_string($_GET['id']);
-    $result = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' AND id = '$id' ORDER BY sort");
 } else {
-    $result = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' ORDER BY sort");
+    $id = 0;
 }
-$rows = dbrows($result);
-$Servers_GameQ = array();
-if ($rows != 0) {
-    for ($i = 0; $data = dbarray($result); $i++) {
-        $Servers_GameQ[$i]['id'] = $data['id'];
-        $Servers_GameQ[$i]['type'] = $data['game'];
-        $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
+
+add_to_head("<script type=\"text/javascript\">    
+    function gqp_ajax_detail() {
+        $.ajax({
+            url:'" . INFUSIONS . "gameserver_query_panel/ajax_detail.php?id=" . $id . "',            
+            beforeSend:function(){
+                $('#gqp_ajax_detail').fadeOut('slow');
+            },
+            success:function(data){
+                $('#gqp_ajax_detail').html(data).fadeIn('slow');
+            },
+            dataType: 'html'
+        });
     }
-}
-
-include_once INFUSIONS . "gameserver_query_panel/functions.php";
-
-function GameQ_Print_Detail($Servers_GameQ) {
-    $result = GameQ_Create($Servers_GameQ);
-    foreach ($result as $id => $data) {
-        if (!$data['gq_online']) {
-            print_r($data);
-            printf("<p>The server did not respond</p>\n");
-            return;
-        }
-        echo "<div>";
-        echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
-        echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-        echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-        echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";        
-        echo "</div>";
-        echo "<div>".print_r($data)."</div>";
+    function gqp_ajax_detail_reload() {
+        $.ajax({
+            url:'" . INFUSIONS . "gameserver_query_panel/ajax_detail.php?id=" . $id . "',            
+            success:function(data){
+                $('#gqp_ajax_detail').html(data);
+            },
+            dataType: 'html'
+        });
     }
-}
+    jQuery(document).ready(function() {        
+        $('#gqp_ajrel_detail').click(function(){
+            gqp_ajax_detail();
+        });
+        gqp_ajax_detail_reload();        
+    });
+</script>");
 
-if ($rows != 0) {
-    opentable("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
-    GameQ_Print_Detail($Servers_GameQ);
-    closetable();
-} else {
-    redirect(BASEDIR . "index.php");
-}
+opentable("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
+echo "<button id='gqp_ajrel_detail'>click</button>";
+echo "<div id='gqp_ajax_detail'></div>";
+closetable();
+
 require_once THEMES . "templates/footer.php";
 ?>
