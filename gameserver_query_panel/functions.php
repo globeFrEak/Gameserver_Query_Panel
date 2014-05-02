@@ -17,12 +17,13 @@
   | written permission from the original author(s).
   +-------------------------------------------------------- */
 
-function GameQ_Games($select) {
+function GameQ_Games($select = FALSE, $option = 'list') {
     require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
     $protocols_path = GAMEQ_BASE . "gameq/protocols/";
     $dir = dir($protocols_path);
     $protocols = array();
     $print = "";
+    $select = "";
     while (false !== ($entry = $dir->read())) {
         if (!is_file($protocols_path . $entry)) {
             continue;
@@ -34,45 +35,26 @@ function GameQ_Games($select) {
         }
         $class = new $class_name;
         $protocols[$class->name()] = array(
-            'name' => $class->name_long(),            
+            'name' => $class->name_long(),
         );
         unset($class);
     }
     unset($dir);
     ksort($protocols);
-    foreach ($protocols AS $gameq => $info) {
-        $print .= "<option value='$gameq' " . ($select == $gameq ? "selected='selected'" : "") . ">" . htmlentities($info['name']) . "</option>";
-    }
-    return $print;
-}
+    switch ($option) {
+        case 'dropdown':
+            foreach ($protocols AS $gameq => $info) {
+                $print .= "<option value='$gameq' " . ($select == $gameq ? "selected='selected'" : "") . ">" . htmlentities($info['name']) . "</option>";
+            }
+            break;
 
-function GameQ_Games2() {
-    require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
-    $protocols_path = GAMEQ_BASE . "gameq/protocols/";
-    $dir = dir($protocols_path);
-    $protocols = array();
-    $print = "";
-    while (false !== ($entry = $dir->read())) {
-        if (!is_file($protocols_path . $entry)) {
-            continue;
-        }
-        $class_name = 'GameQ_Protocols_' . ucfirst(pathinfo($entry, PATHINFO_FILENAME));
-        $reflection = new ReflectionClass($class_name);
-        if (!$reflection->IsInstantiable()) {
-            continue;
-        }
-        $class = new $class_name;
-        $protocols[$class->name()] = array(
-            'name' => $class->name_long(),            
-        );
-        unset($class);
-    }
-    unset($dir);
-    ksort($protocols);
-    foreach ($protocols AS $gameq => $info) {
-        $print .= "<div style='float:left;width:200px;height:32px;padding:5px;'>"
-                . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $gameq . ".jpg' alt='" . htmlentities($info['name']) . "' title='" . htmlentities($info['name']) . "' height='32' width='32'/>"
-                . "<span>" . htmlentities($info['name']) . "</span></div>";
+        case 'list':
+            foreach ($protocols AS $gameq => $info) {
+                $print .= "<div class='gqplist tbl2'>"
+                        . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $gameq . ".jpg' alt='" . htmlentities($info['name']) . "' title='" . htmlentities($info['name']) . "' height='32' width='32'/>"
+                        . "<span>" . htmlentities($info['name']) . "</span></div>";
+            }
+            break;
     }
     return $print;
 }

@@ -144,7 +144,7 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' value='$port' ></td>\n";
     echo "<td class='tbl1'>"
     . "<select name='game' class='textbox' maxlength='10'>"
-    . GameQ_Games($game)
+    . GameQ_Games($game, 'dropdown')
     . "</select>"
     . "</td>\n";
     echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3' value='$sort'></td>\n";
@@ -162,7 +162,7 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' placeholder='27015' ></td>\n";
     echo "<td class='tbl1'>"
     . "<select name='game' class='textbox' maxlength='10'>"
-    . GameQ_Games($game)
+    . GameQ_Games($game, 'dropdown')
     . "</select>"
     . "</td>\n";
     echo "</td>\n";
@@ -180,7 +180,7 @@ closetable();
 
 //List all supported games
 opentable("Game List");
-echo GameQ_Games2();
+echo GameQ_Games();
 closetable();
 require_once(THEMES . "templates/footer.php");
 ?>

@@ -56,3 +56,15 @@
 .gqp-gamepad:before {
     content: "\f11b";
 }
+.gqplist {
+    display:inline-block;
+    position:relative;
+    width:26em;
+    margin:1em;
+}
+.gqplist img {
+    vertical-align:middle;
+}
+.gqplist span {
+    display:inline-block;vertical-align:middle;margin-left:1em;
+}
