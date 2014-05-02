@@ -2,7 +2,7 @@
 
 /* -------------------------------------------------------+
   | PHP-Fusion Content Management System
-  | Copyright � 2002 - 2008 Nick Jones
+  | Copyright (C) 2002 - 2013 Nick Jones
   | http://www.php-fusion.co.uk/
   +--------------------------------------------------------+
   | Infusion: GamerServer Query Panel
@@ -16,6 +16,21 @@
   | copyright header is strictly prohibited without
   | written permission from the original author(s).
   +-------------------------------------------------------- */
+require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
+
+function GameQ_Create($Servers_GameQ) {
+// Call the class, and add your servers.
+    $gq = new GameQ();
+    $gq->addServers($Servers_GameQ);
+// You can optionally specify some settings
+    $gq->setOption('timeout', 1); // Seconds
+// You can optionally specify some output filters,
+// these will be applied to the results obtained.
+    $gq->setFilter('normalise');
+
+// Send requests, and parse the data
+    return $gq->requestData();  
+}
 
 function GameQ_Games($select = FALSE, $option = 'list') {
     require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
@@ -54,8 +69,8 @@ function GameQ_Games($select = FALSE, $option = 'list') {
                         . "<span>" . htmlentities($info['name']) . "</span></div>";
             }
             break;
-        case 'count':            
-                $print = count($protocols);            
+        case 'count':
+            $print = count($protocols);
             break;
     }
     return $print;

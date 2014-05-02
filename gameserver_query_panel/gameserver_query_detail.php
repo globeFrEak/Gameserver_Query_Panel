@@ -2,7 +2,7 @@
 
 /* -------------------------------------------------------+
   | PHP-Fusion Content Management System
-  | Copyright � 2002 - 2008 Nick Jones
+  | Copyright (C) 2002 - 2013 Nick Jones
   | http://www.php-fusion.co.uk/
   +--------------------------------------------------------+
   | Infusion: GamerServer Query Panel
@@ -20,7 +20,6 @@ require_once "../../maincore.php";
 require_once THEMES . "templates/header.php";
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
-include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
 add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
 
@@ -49,45 +48,29 @@ if ($rows != 0) {
     }
 }
 
-require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
+include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-// Call the class, and add your servers.
-$gq = new GameQ();
-$gq->addServers($Servers_GameQ);
-
-// You can optionally specify some settings
-$gq->setOption('timeout', 1); // Seconds
-// You can optionally specify some output filters,
-// these will be applied to the results obtained.
-$gq->setFilter('normalise');
-
-// Send requests, and parse the data
-$Results_GameQ = $gq->requestData();
-
-function print_results_details($results) {
-    foreach ($results as $id => $data) {
-        print_table_details($data, $id);
+function GameQ_Print_Detail($Servers_GameQ) {
+    $result = GameQ_Create($Servers_GameQ);
+    foreach ($result as $id => $data) {
+        if (!$data['gq_online']) {
+            print_r($data);
+            printf("<p>The server did not respond</p>\n");
+            return;
+        }
+        echo "<div>";
+        echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
+        echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
+        echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
+        echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
+        echo print_r($data);
+        echo "</div>";
     }
-}
-
-function print_table_details($data, $id) {
-    if (!$data['gq_online']) {
-        print_r($data);
-        printf("<p>The server did not respond</p>\n");
-        return;
-    }
-    echo "<div>";
-    echo "<h5><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a></h5>";
-    echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-    echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-    echo "<span style='float:right'><span class='gqp-group'></span> " . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . "</span>";
-    echo print_r($data);
-    echo "</div>";
 }
 
 if ($rows != 0) {
     opentable("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
-    print_results_details($Results_GameQ);
+    GameQ_Print_Detail($Servers_GameQ);
     closetable();
 } else {
     redirect(BASEDIR . "index.php");
