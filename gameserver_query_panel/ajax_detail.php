@@ -44,7 +44,7 @@ include_once INFUSIONS . "gameserver_query_panel/functions.php";
 $Servers = GameQ_Create($Servers_GameQ);
 foreach ($Servers as $id => $data) {
     if (!$data['gq_online']) {
-        echo "<p>The server did not respond</p>\n";        
+        echo "<p>The server did not respond</p>\n";
     } else {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
@@ -54,7 +54,17 @@ foreach ($Servers as $id => $data) {
         echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
         echo "<div><h5>IP: " . $data['gq_address'] . ":" . $data['gq_port'] . "</h5>";
+        if ($data['gq_numplayers'] > 0) {
+            echo "<ul>";
+            for ($count = 0; $count < $data['gq_numplayers']; $count++) {
+                echo "<li>" . $data['players'][$count]['gq_name'] . "</li>";
+            }
+            echo "</ul>";
+        }
         echo "</div>";
+        if (iSUPERADMIN) {
+            echo var_dump($data);
+        }
         echo "</div>";
     }
 }
