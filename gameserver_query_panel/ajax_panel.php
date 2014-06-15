@@ -37,7 +37,9 @@ include_once INFUSIONS . "gameserver_query_panel/functions.php";
 $Servers = GameQ_Create($Servers_GameQ);
 foreach ($Servers as $id => $data) {
     if (!$data['gq_online']) {
-        echo "<p>The server did not respond</p>\n";
+        echo "<div>";
+        echo "<h5><span class='gqp-frown-o'></span> ".$data['gq_address'].":".$data['gq_port']." no response!</h5>";
+        echo "</div>\n";        
     } else {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");

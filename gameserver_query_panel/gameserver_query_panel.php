@@ -60,8 +60,8 @@ if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale
     include INFUSIONS . "gameserver_query_panel/locale/English.php";
 }
 
-openside("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
-echo "<button id='GQP_AjaxRel'>click</button>";
+openside("<span class='gqp-gamepad'></span> " . $locale['gqp_title'], true, "on");
 echo "<div id='gqp_ajax_panel'></div>";
+echo "<div class='GQP_AjaxRel'><span id='GQP_AjaxRel' class='gqp-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span></div>";
 closeside();
 ?>
