@@ -28,8 +28,10 @@ if (!checkrights("GQP") || !defined("iAUTH") || $_GET['aid'] != iAUTH) {
 include INFUSIONS . "gameserver_query_panel/functions.php";
 add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
 add_to_head("<script>
-$(function(){ 
+$(function(){
+    ///reset
     $('#gqpreset','#gqpserver').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked');
+    ///setzt placeholder tag von port je nach spiel    
     $(\"select[name='game']\").change(function() {
         var gametype = $(this).val();
         $.ajax({
