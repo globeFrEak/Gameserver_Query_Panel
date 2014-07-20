@@ -17,6 +17,7 @@
   | written permission from the original author(s).
   +-------------------------------------------------------- */
 require_once "../../maincore.php";
+if (!defined("IN_FUSION")) { die("Access Denied"); }
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 

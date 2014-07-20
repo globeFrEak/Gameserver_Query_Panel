@@ -29,7 +29,7 @@ function GameQ_Create($Servers_GameQ) {
     $gq->setFilter('normalise');
 
 // Send requests, and parse the data
-    return $gq->requestData();  
+    return $gq->requestData();
 }
 
 function GameQ_Games($select = FALSE, $option = 'list') {
@@ -50,6 +50,7 @@ function GameQ_Games($select = FALSE, $option = 'list') {
         $class = new $class_name;
         $protocols[$class->name()] = array(
             'name' => $class->name_long(),
+            'port' => $class->port()
         );
         unset($class);
     }
@@ -69,6 +70,15 @@ function GameQ_Games($select = FALSE, $option = 'list') {
                         . "<span>" . htmlentities($info['name']) . "</span></div>";
             }
             break;
+
+        case 'portinfo':
+            foreach ($protocols AS $gameq => $info) {
+                if ($gameq == $select) {
+                    $print .= $info['port'];
+                }
+            }
+            break;
+
         case 'count':
             $print = count($protocols);
             break;

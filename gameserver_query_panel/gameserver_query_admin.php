@@ -28,8 +28,19 @@ if (!checkrights("GQP") || !defined("iAUTH") || $_GET['aid'] != iAUTH) {
 include INFUSIONS . "gameserver_query_panel/functions.php";
 add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
 add_to_head("<script>
-$(function(){    
-    $('#gqpreset','#gqpserver').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked');    
+$(function(){ 
+    $('#gqpreset','#gqpserver').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked');
+    $(\"select[name='game']\").change(function() {
+        var gametype = $(this).val();
+        $.ajax({
+            url:'" . INFUSIONS . "gameserver_query_panel/ajax_admin.php',
+            data: {game: gametype},            
+            type: 'post',
+            success: function(data) { 
+                $(\"input[name='port']\").attr('placeholder', data);               
+            }            
+        });                
+    });    
 });
 
 </script>");
@@ -80,9 +91,9 @@ if (dbrows($result) != 0) {
     echo "<tr>";
     echo "<th class='tbl2'><strong>ID</strong></th>";
     echo "<th class='tbl2'><strong>Name</strong></th>";
+    echo "<th class='tbl2'><strong>Spiel</strong></th>";
     echo "<th class='tbl2'><strong>Adresse</strong></th>";
     echo "<th class='tbl2'><strong>Port</strong></th>";
-    echo "<th class='tbl2'><strong>Spiel</strong></th>";
     echo "<th class='tbl2'><strong>Sortierung</strong></th>";
     echo "<th class='tbl2'><strong>Active</strong></th>";
     echo "<th class='tbl2' colspan='2'><strong>Optionen</strong></th>";
@@ -91,10 +102,10 @@ if (dbrows($result) != 0) {
         echo "<tr>";
         echo "<td class='tbl1'>" . $data['id'] . "</td>";
         echo "<td class='tbl1'>" . $data['name'] . "</td>";
-        echo "<td class='tbl1'>" . $data['address'] . "</td>";
-        echo "<td class='tbl1'>" . $data['port'] . "</td>";
         echo "<td class='tbl1'>"
         . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></td>";
+        echo "<td class='tbl1'>" . $data['address'] . "</td>";
+        echo "<td class='tbl1'>" . $data['port'] . "</td>";
         echo "<td class='tbl1'>" . $data['sort'] . "</td>";
         if ($data['active'] == 1) {
             echo "<td class='tbl1'>Ja</td>";
@@ -102,21 +113,21 @@ if (dbrows($result) != 0) {
             echo "<td class='tbl1'>Nein</td>";
         }
         echo "<td class='tbl1'>";
-        echo "<form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=del'>";
-        echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-        echo "<button type='submit'><span class='gqp-trash-o' title='L&ouml;schen'></span></button>";
-        echo "</form>";
-        echo "</td>";
-        echo "<td class='tbl1'>";
         echo "<form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=edit'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<input type='hidden' name='name' value='" . $data['name'] . "'>";
+        echo "<input type='hidden' name='game' value='" . $data['game'] . "'>";
         echo "<input type='hidden' name='address' value='" . $data['address'] . "'>";
         echo "<input type='hidden' name='port' value='" . $data['port'] . "'>";
-        echo "<input type='hidden' name='game' value='" . $data['game'] . "'>";
         echo "<input type='hidden' name='sort' value='" . $data['sort'] . "'>";
         echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
         echo "<button type='submit'><span class='gqp-gear' title='Editieren'></span></button>";
+        echo "</form>";
+        echo "</td>";
+        echo "<td class='tbl1'>";
+        echo "<form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=del'>";
+        echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
+        echo "<button type='submit'><span class='gqp-trash-o' title='L&ouml;schen'></span></button>";
         echo "</form>";
         echo "</td>";
         echo "</tr>";
@@ -130,14 +141,14 @@ echo "<hr class='side-hr'/>";
 
 /* * Server hinzufuegen/editieren * */
 $exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='Formular zurücksetzen'></span></button></a>";
-echo "<h4>" . (isset($_GET['server']) && $_GET['server'] == "edit" ? "Server editieren ".$exit : "Server hinzufügen") . "</h4>\n";
+echo "<h4>" . (isset($_GET['server']) && $_GET['server'] == "edit" ? "Server editieren " . $exit : "Server hinzufügen") . "</h4>\n";
 echo "<form id='gqpserver' name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
 echo "<table class='tbl-border forum_idx_table' cellpadding='0' cellspacing='1'>\n";
 echo "<tr>\n";
 echo "<th class='tbl2'><strong>Name</strong></th>\n";
+echo "<th class='tbl2'><strong>Spiel</strong></th>\n";
 echo "<th class='tbl2'><strong>Adresse</strong></th>\n";
 echo "<th class='tbl2'><strong>Port</strong></th>\n";
-echo "<th class='tbl2'><strong>Spiel</strong></th>\n";
 echo "<th class='tbl2'><strong>Sortierung</strong></th>\n";
 echo "<th class='tbl2'><strong>Active</strong></th>\n";
 echo "</tr>\n";
@@ -146,13 +157,13 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<td class='tbl1'>\n";
     echo "<input type='hidden' name='id' value='$id'>";
     echo "<input name='name' type='text' size='20' maxlength='50' value='$name' ></td>\n";
-    echo "<td class='tbl1'><input name='address' type='text' size='20' maxlength='50' value='$address' ></td>\n";
-    echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' value='$port' ></td>\n";
     echo "<td class='tbl1'>"
     . "<select name='game' class='textbox' maxlength='10'>"
     . GameQ_Games($game, 'dropdown')
     . "</select>"
     . "</td>\n";
+    echo "<td class='tbl1'><input name='address' type='text' size='20' maxlength='50' value='$address' ></td>\n";
+    echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' value='$port' placeholder='27015' ></td>\n";
     echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3' value='$sort'></td>\n";
     if (isset($active) && $active == "1") {
         echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
@@ -164,14 +175,14 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<tr>\n";
     echo "<td class='tbl1'>\n";
     echo "<input name='name' type='text' size='20' maxlength='50' placeholder='Server Name' ></td>\n";
-    echo "<td class='tbl1'><input name='address' type='text' size='20' maxlength='50' placeholder='Server Adresse (IP or Hostname)'></td>\n";
-    echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' placeholder='27015' ></td>\n";
     echo "<td class='tbl1'>"
     . "<select name='game' class='textbox' maxlength='10'>"
     . GameQ_Games($game, 'dropdown')
     . "</select>"
     . "</td>\n";
     echo "</td>\n";
+    echo "<td class='tbl1'><input name='address' type='text' size='20' maxlength='50' placeholder='Server Adresse (IP or Hostname)'></td>\n";
+    echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' placeholder='27015' ></td>\n";
     echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3'></td>\n";
     echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
     echo "</tr>\n";
@@ -185,7 +196,7 @@ echo "</form>\n";
 closetable();
 
 //List all supported games
-opentable("Game list - ".GameQ_Games('', 'count')." games supported");
+opentable("Game list - " . GameQ_Games('', 'count') . " games supported");
 echo GameQ_Games();
 closetable();
 require_once(THEMES . "templates/footer.php");
