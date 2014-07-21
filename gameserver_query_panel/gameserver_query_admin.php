@@ -90,19 +90,17 @@ echo "<h4>Eingetragene Server:</h4>";
 $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " ORDER BY sort ASC");
 if (dbrows($result) != 0) {
     echo "<table class='tbl-border forum_idx_table' cellpadding='0' cellspacing='1'>";
-    echo "<tr>";
-    echo "<th class='tbl2'><strong>ID</strong></th>";
+    echo "<tr>";    
     echo "<th class='tbl2'><strong>Name</strong></th>";
     echo "<th class='tbl2'><strong>Spiel</strong></th>";
     echo "<th class='tbl2'><strong>Adresse</strong></th>";
     echo "<th class='tbl2'><strong>Port</strong></th>";
-    echo "<th class='tbl2'><strong>Sortierung</strong></th>";
+    echo "<th class='tbl2'><strong>Sort</strong></th>";
     echo "<th class='tbl2'><strong>Active</strong></th>";
     echo "<th class='tbl2' colspan='2'><strong>Optionen</strong></th>";
     echo "</tr>";
     while ($data = dbarray($result)) {
-        echo "<tr>";
-        echo "<td class='tbl1'>" . $data['id'] . "</td>";
+        echo "<tr>";        
         echo "<td class='tbl1'>" . $data['name'] . "</td>";
         echo "<td class='tbl1'>"
         . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></td>";
@@ -151,7 +149,7 @@ echo "<th class='tbl2'><strong>Name</strong></th>\n";
 echo "<th class='tbl2'><strong>Spiel</strong></th>\n";
 echo "<th class='tbl2'><strong>Adresse</strong></th>\n";
 echo "<th class='tbl2'><strong>Port</strong></th>\n";
-echo "<th class='tbl2'><strong>Sortierung</strong></th>\n";
+echo "<th class='tbl2'><strong>Sort</strong></th>\n";
 echo "<th class='tbl2'><strong>Active</strong></th>\n";
 echo "</tr>\n";
 if (isset($_GET['server']) && $_GET['server'] == "edit") {
@@ -165,8 +163,8 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     . "</select>"
     . "</td>\n";
     echo "<td class='tbl1'><input name='address' type='text' size='20' maxlength='50' value='$address' ></td>\n";
-    echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' value='$port' placeholder='27015' ></td>\n";
-    echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3' value='$sort'></td>\n";
+    echo "<td class='tbl1'><input name='port' type='text' size='2' maxlength='6' value='$port' placeholder='27015' ></td>\n";
+    echo "<td class='tbl1'><input name='sort' type='text' size='1' maxlength='3' value='$sort'></td>\n";
     if (isset($active) && $active == "1") {
         echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
     } else {
@@ -184,8 +182,8 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     . "</td>\n";
     echo "</td>\n";
     echo "<td class='tbl1'><input name='address' type='text' size='20' maxlength='50' placeholder='Server Adresse (IP or Hostname)'></td>\n";
-    echo "<td class='tbl1'><input name='port' type='text' size='6' maxlength='6' placeholder='27015' ></td>\n";
-    echo "<td class='tbl1'><input name='sort' type='text' size='3' maxlength='3'></td>\n";
+    echo "<td class='tbl1'><input name='port' type='text' size='2' maxlength='6' placeholder='27015' ></td>\n";
+    echo "<td class='tbl1'><input name='sort' type='text' size='1' maxlength='3'></td>\n";
     echo "<td class='tbl1'><input type='checkbox' name='active' value='1' checked></td>\n";
     echo "</tr>\n";
 }

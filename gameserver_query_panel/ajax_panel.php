@@ -20,22 +20,9 @@ require_once "../../maincore.php";
 if (!defined("IN_FUSION")) { die("Access Denied"); }
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
-
-$Servers_GameQ = array();
-$result_panel = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' ORDER BY sort");
-if (dbrows($result_panel) != 0) {
-    for ($i = 0; $data = dbarray($result_panel); $i++) {
-        $Servers_GameQ[$i]['id'] = $data['id'];
-        $Servers_GameQ[$i]['type'] = $data['game'];
-        $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
-    }
-}
-
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-
-$Servers = GameQ_Create($Servers_GameQ);
+$Servers = GameQ_Create(GameQ_Servers());
 foreach ($Servers as $id => $data) {
     if (!$data['gq_online']) {
         echo "<div>";

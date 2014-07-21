@@ -32,6 +32,28 @@ function GameQ_Create($Servers_GameQ) {
     return $gq->requestData();
 }
 
+function GameQ_Servers($id = FALSE) {
+    // Server abfragen!
+    if (isset($id) && is_numeric($id) && $id != 0) {
+        $id = mysql_real_escape_string($id);
+        $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
+                WHERE active ='1' AND id = '$id' ORDER BY sort");
+    } else {
+        $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
+                WHERE active ='1' ORDER BY sort");
+    }
+    $rows = dbrows($result_detail);
+    $Servers_GameQ = array();
+    if ($rows != 0) {
+        for ($i = 0; $data = dbarray($result_detail); $i++) {
+            $Servers_GameQ[$i]['id'] = $data['id'];
+            $Servers_GameQ[$i]['type'] = $data['game'];
+            $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
+        }
+    }
+    return $Servers_GameQ;
+}
+
 function GameQ_Games($select = FALSE, $option = 'list') {
     require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
     $protocols_path = GAMEQ_BASE . "gameq/protocols/";

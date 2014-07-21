@@ -20,29 +20,9 @@ require_once "../../maincore.php";
 if (!defined("IN_FUSION")) { die("Access Denied"); }
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
-
-// Server abfragen!
-if (isset($_GET['id']) && is_numeric($_GET['id']) && $_GET['id'] != 0) {
-    $id = mysql_real_escape_string($_GET['id']);
-    $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' AND id = '$id' ORDER BY sort");
-} else {
-    $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' ORDER BY sort");
-}
-$rows = dbrows($result_detail);
-$Servers_GameQ = array();
-if ($rows != 0) {
-    for ($i = 0; $data = dbarray($result_detail); $i++) {
-        $Servers_GameQ[$i]['id'] = $data['id'];
-        $Servers_GameQ[$i]['type'] = $data['game'];
-        $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
-    }
-}
-
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-$Servers = GameQ_Create($Servers_GameQ);
+$Servers = GameQ_Create(GameQ_Servers($_GET['id']));
 foreach ($Servers as $id => $data) {
     if (!$data['gq_online']) {
         echo "<p>The server did not respond</p>\n";
