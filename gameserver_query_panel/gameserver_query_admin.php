@@ -90,7 +90,7 @@ echo "<h4>Eingetragene Server:</h4>";
 $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " ORDER BY sort ASC");
 if (dbrows($result) != 0) {
     echo "<table class='tbl-border forum_idx_table' cellpadding='0' cellspacing='1'>";
-    echo "<tr>";    
+    echo "<tr>";
     echo "<th class='tbl2'><strong>Name</strong></th>";
     echo "<th class='tbl2'><strong>Spiel</strong></th>";
     echo "<th class='tbl2'><strong>Adresse</strong></th>";
@@ -100,7 +100,7 @@ if (dbrows($result) != 0) {
     echo "<th class='tbl2' colspan='2'><strong>Optionen</strong></th>";
     echo "</tr>";
     while ($data = dbarray($result)) {
-        echo "<tr>";        
+        echo "<tr>";
         echo "<td class='tbl1'>" . $data['name'] . "</td>";
         echo "<td class='tbl1'>"
         . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></td>";
@@ -171,6 +171,17 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
         echo "<td class='tbl1'><input type='checkbox' name='active' value='1'></td>\n";
     }
     echo "</tr>\n";
+    echo "<tr>\n";
+    echo "<td class='tbl1' colspan='6'>";
+    $Servers = GameQ_Create(GameQ_Servers($id));
+    foreach ($Servers as $id => $data) {
+        if ($data['gq_online']) {            
+            foreach ($data as $key => $value) {               
+                echo $key."--->".$value."(".is_array($value).")</br>";                
+            }
+        }
+    }
+    echo "</td>\n</tr>\n";
 } else {
     echo "<tr>\n";
     echo "<td class='tbl1'>\n";
