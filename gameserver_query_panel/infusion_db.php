@@ -18,6 +18,9 @@
 if (!defined("IN_FUSION")) { die("Access Denied"); }
 
 if (!defined("DB_GQP_MAIN")) {
-	define("DB_GQP_MAIN", DB_PREFIX."gameserver_query");
+	define("DB_GQP_MAIN", DB_PREFIX."gqp_main");
+}
+if (!defined("DB_GQP_SERVER_OPT")) {
+	define("DB_GQP_SERVER_OPT", DB_PREFIX."gqp_server_options");
 }
 ?>

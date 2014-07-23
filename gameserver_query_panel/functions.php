@@ -18,18 +18,21 @@
   +-------------------------------------------------------- */
 require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
 
-function GameQ_Create($Servers_GameQ) {
+function GameQ_Create($servers) {
+    if ($servers != FALSE) {
 // Call the class, and add your servers.
-    $gq = new GameQ();
-    $gq->addServers($Servers_GameQ);
+        $gq = new GameQ();
+        $gq->addServers($servers);
 // You can optionally specify some settings
-    $gq->setOption('timeout', 1); // Seconds
+        $gq->setOption('timeout', 1); // Seconds
 // You can optionally specify some output filters,
 // these will be applied to the results obtained.
-    $gq->setFilter('normalise');
-
+        $gq->setFilter('normalise');
 // Send requests, and parse the data
-    return $gq->requestData();
+        return $gq->requestData();
+    } else {
+        return FALSE;
+    }
 }
 
 function GameQ_Servers($id = FALSE) {
@@ -43,15 +46,17 @@ function GameQ_Servers($id = FALSE) {
                 WHERE active ='1' ORDER BY sort");
     }
     $rows = dbrows($result_detail);
-    $Servers_GameQ = array();
     if ($rows != 0) {
+        $Servers_GameQ = array();        
         for ($i = 0; $data = dbarray($result_detail); $i++) {
             $Servers_GameQ[$i]['id'] = $data['id'];
             $Servers_GameQ[$i]['type'] = $data['game'];
             $Servers_GameQ[$i]['host'] = $data['address'] . ":" . $data['port'];
         }
+        return $Servers_GameQ;
+    } else {
+        return FALSE;
     }
-    return $Servers_GameQ;
 }
 
 function GameQ_Games($select = FALSE, $option = 'list') {

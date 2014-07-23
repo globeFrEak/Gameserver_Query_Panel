@@ -20,7 +20,7 @@ if (!defined("IN_FUSION")) {
     die("Access Denied");
 }
 
-include INFUSIONS . "gameserver_query_panel/infusion_db.php";
+include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 
 if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
     include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
@@ -36,7 +36,7 @@ $inf_developer = "globeFrEak";
 $inf_email = "globefreak@web.de";
 $inf_weburl = "http://www.cwclan.de";
 
-$inf_folder = "gameserver_query_panel"; 
+$inf_folder = "gameserver_query_panel";
 
 $inf_newtable[1] = DB_GQP_MAIN . "(
 id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -49,13 +49,22 @@ active TINYINT(1) UNSIGNED DEFAULT '1' NOT NULL ,
 PRIMARY KEY (id)
 ) ENGINE=MyISAM;";
 
+$inf_newtable[2] = DB_GQP_SERVER_OPT . "(
+id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+server_id INT(5) NULL ,
+panel TINYINT(1) UNSIGNED DEFAULT '1' NOT NULL ,
+field VARCHAR(60) NULL ,
+PRIMARY KEY (id)
+) ENGINE=MyISAM;";
+
 $inf_droptable[1] = DB_GQP_MAIN;
+$inf_droptable[2] = DB_GQP_SERVER_OPT;
 
 $inf_adminpanel[1] = array(
     "title" => $locale['gqp_admin'],
     "image" => "image.gif",
     "panel" => "gameserver_query_admin.php",
-    "rights" => "GQP"
+    "rights" => "GQPG"
 );
 
 /**

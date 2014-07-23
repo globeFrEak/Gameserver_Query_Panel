@@ -17,36 +17,40 @@
   | written permission from the original author(s).
   +-------------------------------------------------------- */
 require_once "../../maincore.php";
-if (!defined("IN_FUSION")) { die("Access Denied"); }
+if (!defined("IN_FUSION")) {
+    die("Access Denied");
+}
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-$Servers = GameQ_Create(GameQ_Servers($_GET['id']));
-foreach ($Servers as $id => $data) {
-    if (!$data['gq_online']) {
-        echo "<p>The server did not respond</p>\n";
-    } else {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
-        $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
-        echo "<div>";
-        echo "<h5>$password<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
-        echo "<div><img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-        echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-        echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
-        echo "<div><h5>IP: " . $data['gq_address'] . ":" . $data['gq_port'] . "</h5>";
-        if ($data['gq_numplayers'] > 0) {
-            echo "<ul>";
-            for ($count = 0; $count < $data['gq_numplayers']; $count++) {
-                echo "<li>" . $data['players'][$count]['gq_name'] . "</li>";
+$servers = GameQ_Create(GameQ_Servers($_GET['id']));
+if ($servers != FALSE) {
+    foreach ($servers as $id => $data) {
+        if (!$data['gq_online']) {
+            echo "<p>The server did not respond</p>\n";
+        } else {
+            $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+            $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
+            echo "<div>";
+            echo "<h5>$password<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
+            echo "<div><img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
+            echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
+            echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
+            echo "<div><h5>IP: " . $data['gq_address'] . ":" . $data['gq_port'] . "</h5>";
+            if ($data['gq_numplayers'] > 0) {
+                echo "<ul>";
+                for ($count = 0; $count < $data['gq_numplayers']; $count++) {
+                    echo "<li>" . $data['players'][$count]['gq_name'] . "</li>";
+                }
+                echo "</ul>";
             }
-            echo "</ul>";
+            echo "</div>";
+            if (iSUPERADMIN) {
+                echo var_dump($data);
+            }
+            echo "</div>";
         }
-        echo "</div>";
-        if (iSUPERADMIN) {
-            echo var_dump($data);
-        }
-        echo "</div>";
     }
 }
 ?>
