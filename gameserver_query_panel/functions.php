@@ -40,10 +40,10 @@ function GameQ_Servers($id = FALSE) {
     if (isset($id) && is_numeric($id) && $id != 0) {
         $id = mysql_real_escape_string($id);
         $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' AND id = '$id' ORDER BY sort");
+                WHERE active ='1' AND id = '$id' ORDER BY server_order");
     } else {
         $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
-                WHERE active ='1' ORDER BY sort");
+                WHERE active ='1' ORDER BY server_order");
     }
     $rows = dbrows($result_detail);
     if ($rows != 0) {
