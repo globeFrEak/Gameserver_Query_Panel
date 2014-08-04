@@ -59,35 +59,45 @@ $(document).ready(function() {
             order = ul.sortable('serialize')
             $('#info').load('gqp_order_updater.php" . $aidlink . "&amp;'+order);
 	}
-    });    
+    });
+    $('#gqp_gl_btn').click(function() {        
+        if ( $(this).hasClass('gqp-chevron-down') ) {
+            $(this).removeClass('gqp-chevron-down').addClass('gqp-chevron-up');            
+        } else {
+            $(this).removeClass('gqp-chevron-up').addClass('gqp-chevron-down');            
+        }                
+        $('#gqp_gamelist').slideToggle('slow', function() {        
+        });
+    });
 });
 
 </script>");
 $error = "";
 opentable($locale['gqp_admin_001']);
 echo "<div id='info'></div>\n";
-echo "<a href='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "'>" . $locale['gqp_admin_002'] . "</a>";
+echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "'><span class='gqp-sign-in'></span> " . $locale['gqp_admin_002'] . "</a>";
 /* * Server aus DB auslesen* */
 $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " ORDER BY server_order");
 if (dbrows($result) != 0) {
     /// SORTABLE LIST
     $k = 0;
-    echo "<ul style='list-style: none;' class='panels-list connected'>\n";
+    echo "<ul style='list-style: none;' class='gqp_list panels-list connected'>\n";
 
     while ($data = dbarray($result)) {
         $row_color = ($k % 2 == 0 ? "tbl1" : "tbl2");
         echo "<li id='listItem_" . $data['id'] . "' class='" . $row_color . ($data['active'] == 0 ? " pdisabled" : "") . "'>\n";
-        echo "<div style='float:left;'><img src='" . IMAGES . "arrow.png' alt='move' class='handle' /></div>\n";
-        echo "<div style='float:left;'>" . $data['name'] . "</div>\n";
-        echo "<div style='float:left;'><img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
-        echo "<div style='float:left;'>" . $data['address'] . ":" . $data['port'] . "</div>\n";
-        echo "<div style='float:right;'>";
-        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=del'>";
+        echo "<div><span class='gqp-arrows-alt handle'></span></div>\n";
+        echo "<div>" . $data['name'] . "</div>\n";
+        echo "<div><img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
+        echo "<div>" . $data['address'] . ":" . $data['port'] . "</div>\n";
+        echo "<div>";
+        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=state'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-        echo "<button type='submit'><span class='gqp-trash-o' title='L&ouml;schen'></span></button>";
+        echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
+        echo "<button type='submit'><span class='" . ($data['active'] ? "gqp-eye-slash" : "gqp-eye") . "' title='" . ($data['active'] ? "deaktivieren" : "aktivieren") . "'></span></button>";
         echo "</form>";
         echo "</div>";
-        echo "<div style='float:right;'>";
+        echo "<div>";
         echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=edit'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<input type='hidden' name='name' value='" . $data['name'] . "'>";
@@ -99,11 +109,10 @@ if (dbrows($result) != 0) {
         echo "<button type='submit'><span class='gqp-gear' title='Editieren'></span></button>";
         echo "</form>";
         echo "</div>";
-        echo "<div style='float:right;'>";
-        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=state'>";
+        echo "<div>";
+        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=del'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-        echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
-        echo "<button type='submit'><span class='" . ($data['active'] ? "gqp-eye-slash" : "gqp-eye") . "' title='" . ($data['active'] ? "deaktivieren" : "aktivieren") . "'></span></button>";
+        echo "<button type='submit'><span class='gqp-trash-o' title='L&ouml;schen'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div style='clear:both;'></div>\n";
@@ -111,50 +120,18 @@ if (dbrows($result) != 0) {
         $k++;
     }
 
-    echo "</ul>\n";
-    /** ALT
-      while ($data = dbarray($result)) {
-      echo "<tr>";
-      echo "<td class='tbl1'>" . $data['name'] . "</td>";
-      echo "<td class='tbl1'>"
-      . "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></td>";
-      echo "<td class='tbl1'>" . $data['address'] . "</td>";
-      echo "<td class='tbl1'>" . $data['port'] . "</td>";
-      echo "<td class='tbl1'>" . $data['order'] . "</td>";
-      if ($data['active'] == 1) {
-      echo "<td class='tbl1'>Ja</td>";
-      } else {
-      echo "<td class='tbl1'>Nein</td>";
-      }
-      echo "<td class='tbl1'>";
-      echo "<form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=edit'>";
-      echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-      echo "<input type='hidden' name='name' value='" . $data['name'] . "'>";
-      echo "<input type='hidden' name='game' value='" . $data['game'] . "'>";
-      echo "<input type='hidden' name='address' value='" . $data['address'] . "'>";
-      echo "<input type='hidden' name='port' value='" . $data['port'] . "'>";
-      echo "<input type='hidden' name='order' value='" . $data['order'] . "'>";
-      echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
-      echo "<button type='submit'><span class='gqp-gear' title='Editieren'></span></button>";
-      echo "</form>";
-      echo "</td>";
-      echo "<td class='tbl1'>";
-      echo "<form name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=del'>";
-      echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-      echo "<button type='submit'><span class='gqp-trash-o' title='L&ouml;schen'></span></button>";
-      echo "</form>";
-      echo "</td>";
-      echo "</tr>";
-      }
-     * */
+    echo "</ul>\n";    
 } else {
-    echo "keine Server Eingetragen!";
+    echo "<br><b>keine Server Eingetragen!</b>";
 }
 closetable();
 
 //List all supported games
-opentable("Game list - " . GameQ_Games('', 'count') . " games supported");
+opentable("Game list - " . GameQ_Games('', 'count') . " games supported <span id='gqp_gl_btn' class='gqp-chevron-down'></span>");
+echo "<div id='gqp_gamelist' style='display:none;'>";
 echo GameQ_Games();
+echo "</div>";
 closetable();
+include_once INFUSIONS . "gameserver_query_panel/copyright.php";
 require_once(THEMES . "templates/footer.php");
 ?>

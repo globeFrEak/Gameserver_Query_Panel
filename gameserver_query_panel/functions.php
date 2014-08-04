@@ -133,5 +133,4 @@ function GameQ_GetInfo($game, $return = 'N') {
     }
     unset($class);
 }
-
 ?>

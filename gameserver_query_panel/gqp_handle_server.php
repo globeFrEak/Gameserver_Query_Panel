@@ -48,37 +48,49 @@ $(document).ready(function() {
     });
     //form reset
     $('#gqpreset','#gqpserver').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked');
-    //form validation
     
+    //form validation    
     $('#gqpsubmit').click(function() {
-    //$('#gqpserver').submit(function( event ) {
+        $('.gqp_success').remove();
+        $('.gqp_error').remove();
         var regexHOST = /^([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
         var regexIP = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
         var regexPORT = /^([0-9]{4}|[0-9]{5})$/;
         if (regexHOST.test($('#gqp_address').val()) || regexIP.test($('#gqp_address').val())) {
-            var gqp_address = 1;          
+            var gqp_address = 1;
+            $('#gqp_address').before('<span class=\"gqp-check gqp_success\"></span>');
         } else {
-            alert('IP/Host');
+            $('#gqp_address').before('<span class=\"gqp-times gqp_error\"></span>');
         }
         if (regexPORT.test($('#gqp_port').val())) {
-            var gqp_port = 1;             
+            var gqp_port = 1;
+            $('#gqp_port').before('<span class=\"gqp-check gqp_success\"></span>');
         } else {
-            alert('PORT');
+            $('#gqp_port').before('<span class=\"gqp-times gqp_error\"></span>');
         }
         if (gqp_address && gqp_port) {
             $('#gqpserver').submit();
         }
         
-    });   
+    });
+    $('#gqp_gl_btn').click(function() {        
+        if ( $(this).closest('label').find('span').hasClass('gqp-chevron-down') ) {
+            $(this).closest('label').find('span').removeClass('gqp-chevron-down').addClass('gqp-chevron-up');            
+        } else {
+            $(this).closest('label').find('span').removeClass('gqp-chevron-up').addClass('gqp-chevron-down');            
+        }                
+        $('#gqp_gamelist').slideToggle('slow', function() {        
+        });
+    });
 });
 
 </script>");
 
 $id = (isset($_POST['id']) && is_numeric($_POST['id']) ? mysql_real_escape_string($_POST['id']) : "");
-$name = (isset($_POST['name']) ? mysql_real_escape_string($_POST['name']) : "");
 $address = (isset($_POST['address']) ? mysql_real_escape_string($_POST['address']) : "");
 $port = (isset($_POST['port']) && is_numeric($_POST['port']) ? mysql_real_escape_string($_POST['port']) : "");
 $game = (isset($_POST['game']) ? mysql_real_escape_string($_POST['game']) : "");
+$name = (isset($_POST['name']) && strlen($_POST['name']) > 0 ? mysql_real_escape_string($_POST['name']) : $address . "(" . $game . ")");
 $server_order = (isset($_POST['server_order']) && is_numeric($_POST['server_order']) ? mysql_real_escape_string($_POST['server_order']) : "");
 $active = (isset($_POST['active']) && is_numeric($_POST['active']) ? mysql_real_escape_string($_POST['active']) : "");
 
@@ -136,30 +148,31 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
 
     echo "<label>Name</label>";
     echo "<input name='name' type='text' size='20' maxlength='50' value='$name' /><br>\n";
-    
+
     echo "<label>Spiel</label>\n";
-    echo "<select name='game' class='textbox' maxlength='10'>"
+    echo "<select name='game' class='textbox' maxlength='30'>"
     . GameQ_Games($game, 'dropdown')
     . "</select>";
-    
+
     echo "<label>Adresse</label>\n";
     echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' value='$address' />\n";
-    
+
     echo "<label>Port</label>\n";
-    echo "<input name='port' type='text' size='2' maxlength='6' value='$port' placeholder='27015' />\n";
-    
+    echo "<input id='gqp_port' name='port' type='text' size='2' maxlength='6' value='$port' placeholder='27015' />\n";
+
     echo "<label>Status</label>\n";
     if (isset($active) && $active == "1") {
-        echo "<input type='checkbox' name='active' value='1' checked />\n";
+        echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' checked />\n";
     } else {
-        echo "<input type='checkbox' name='active' value='1' />\n";
+        echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' />\n";
     }
+    echo "</br>";
     $servers = GameQ_Create(GameQ_Servers($id));
     if ($servers != FALSE) {
         $result = dbquery("SELECT field, panel FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='$id'");
+        $saved_fields_panel = array();
+        $saved_fields_detail = array();
         if (dbrows($result) != 0) {
-            $saved_fields_panel = array();
-            $saved_fields_detail = array();
             for ($i = 0; $data = dbarray($result); $i++) {
                 if ($data['panel'] == 0) {
                     $saved_fields_panel[$i] = $data['field'];
@@ -169,13 +182,15 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
             }
         }
         foreach ($servers as $id => $data) {
-            echo "<label>Panel + Detail Anzeige</label><br>\n";
             if ($data['gq_online']) {
+                echo "<label id='gqp_gl_btn'>" . $locale['gqp_admin_003'] . "<span class='gqp-chevron-down'></span></label>";
+                echo "<div id='gqp_gamelist' style='display:none;'>";
+                echo "<label>Panel + Detail Anzeige</label><br>\n";
                 foreach ($data as $key => $value) {
-                    
                     echo "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_panel[]' value='$key' " . (in_array($key, $saved_fields_panel) ? "checked" : "") . " />"
                     . "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_detail[]' value='$key' " . (in_array($key, $saved_fields_detail) ? "checked" : "") . " />$key</b><br>";
                 }
+                echo "</div><br>";
             }
         }
     }
@@ -183,7 +198,7 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<label>Name</label>\n";
     echo "<input name='name' type='text' size='20' maxlength='50' placeholder='Server Name' /><br>\n";
     echo "<label>Spiel</label>\n";
-    echo "<select name='game' class='textbox' maxlength='10'>"
+    echo "<select name='game' class='textbox' maxlength='30'>"
     . GameQ_Games($game, 'dropdown')
     . "</select><br>\n";
     echo "<label>Adresse</label>\n";
@@ -197,8 +212,7 @@ echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='Editie
 echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='Zurücksetzen'></span></button>";
 echo "</form>\n";
 echo "</div>";
-echo "<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";
+echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";
 closetable();
 require_once(THEMES . "templates/footer.php");
 ?>
-
