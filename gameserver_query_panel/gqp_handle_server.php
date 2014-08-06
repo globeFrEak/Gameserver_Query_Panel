@@ -112,7 +112,7 @@ if (isset($_GET['server']) && $_GET['server'] == "add") {
             }
             redirect("gameserver_query_admin.php" . $aidlink);
         } else {
-            $error = "<b>Der Server ist schon eingetragen!</b>";
+            $error = $locale['gqp_admin_004'];
         }
     } else {
         //Panel Order            
@@ -139,28 +139,28 @@ if (isset($_GET['server']) && $_GET['server'] == "state") {
 }
 
 /* * Server hinzufuegen/editieren * */
-$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='Formular zurücksetzen'></span></button></a>";
-opentable((isset($_GET['server']) && $_GET['server'] == "edit" ? "Server bearbeiten " . $exit : "Server hinzufügen"));
+$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='".$locale['gqp_admin_005']."'></span></button></a>";
+opentable((isset($_GET['server']) && $_GET['server'] == "edit" ? $locale['gqp_admin_006'] . $exit : $locale['gqp_admin_002']));
 echo "<div id='gqp_server_form'>";
 echo "<form id='gqpserver' name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
 if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<input type='hidden' name='id' value='$id' />";
 
-    echo "<label>Name</label>";
+    echo "<label>".$locale['gqp_admin_007']."</label>";
     echo "<input name='name' type='text' size='20' maxlength='50' value='$name' /><br>\n";
 
-    echo "<label>Spiel</label>\n";
+    echo "<label>".$locale['gqp_admin_008']."</label>\n";
     echo "<select name='game' class='textbox' maxlength='30'>"
     . GameQ_Games($game, 'dropdown')
     . "</select>";
 
-    echo "<label>Adresse</label>\n";
+    echo "<label>".$locale['gqp_admin_009']."</label>\n";
     echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' value='$address' />\n";
 
-    echo "<label>Port</label>\n";
+    echo "<label>".$locale['gqp_admin_010']."</label>\n";
     echo "<input id='gqp_port' name='port' type='text' size='2' maxlength='6' value='$port' placeholder='27015' />\n";
 
-    echo "<label>Status</label>\n";
+    echo "<label>".$locale['gqp_admin_011']."</label>\n";
     if (isset($active) && $active == "1") {
         echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' checked />\n";
     } else {
@@ -195,21 +195,21 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
         }
     }
 } else {
-    echo "<label>Name</label>\n";
-    echo "<input name='name' type='text' size='20' maxlength='50' placeholder='Server Name' /><br>\n";
-    echo "<label>Spiel</label>\n";
+    echo "<label>".$locale['gqp_admin_007']."</label>\n";
+    echo "<input name='name' type='text' size='20' maxlength='50' placeholder='".$locale['gqp_admin_007a']."' /><br>\n";
+    echo "<label>".$locale['gqp_admin_008']."</label>\n";
     echo "<select name='game' class='textbox' maxlength='30'>"
     . GameQ_Games($game, 'dropdown')
     . "</select><br>\n";
-    echo "<label>Adresse</label>\n";
-    echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' placeholder='Server Adresse (IP or Hostname)' /><br>\n";
-    echo "<label>Port</label>\n";
-    echo "<input id='gqp_port' name='port' type='text' size='2' maxlength='6' placeholder='27015' /><br>\n";
-    echo "<label>Status</label>\n";
+    echo "<label>".$locale['gqp_admin_009']."</label>\n";
+    echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' placeholder='".$locale['gqp_admin_009a']."' /><br>\n";
+    echo "<label>".$locale['gqp_admin_010']."</label>\n";
+    echo "<input id='gqp_port' name='port' type='text' size='2' maxlength='6' placeholder='' /><br>\n";
+    echo "<label>".$locale['gqp_admin_011']."</label>\n";
     echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' checked /><br>\n";
 }
-echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='Editieren'></span></button>";
-echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='Zurücksetzen'></span></button>";
+echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='".$locale['gqp_admin_edit']."'></span></button>";
+echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='".$locale['gqp_admin_005']."'></span></button>";
 echo "</form>\n";
 echo "</div>";
 echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";

@@ -20,15 +20,10 @@ require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
 
 function GameQ_Create($servers) {
     if ($servers != FALSE) {
-// Call the class, and add your servers.
         $gq = new GameQ();
         $gq->addServers($servers);
-// You can optionally specify some settings
-        $gq->setOption('timeout', 1); // Seconds
-// You can optionally specify some output filters,
-// these will be applied to the results obtained.
+        $gq->setOption('timeout', 1);
         $gq->setFilter('normalise');
-// Send requests, and parse the data
         return $gq->requestData();
     } else {
         return FALSE;
@@ -36,7 +31,6 @@ function GameQ_Create($servers) {
 }
 
 function GameQ_Servers($id = FALSE) {
-    // Server abfragen!
     if (isset($id) && is_numeric($id) && $id != 0) {
         $id = mysql_real_escape_string($id);
         $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             

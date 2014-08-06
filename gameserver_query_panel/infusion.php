@@ -31,7 +31,7 @@ if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale
 // Infusion general information
 $inf_title = $locale['gqp_title'];
 $inf_description = $locale['gqp_desc'];
-$inf_version = "1.0";
+$inf_version = $locale['gqp_version'];
 $inf_developer = "globeFrEak";
 $inf_email = "globefreak@web.de";
 $inf_weburl = "http://www.cwclan.de";
@@ -62,16 +62,8 @@ $inf_droptable[2] = DB_GQP_SERVER_OPT;
 
 $inf_adminpanel[1] = array(
     "title" => $locale['gqp_admin'],
-    "image" => "image.gif",
+    "image" => "../infusions/gameserver_query_panel/icon.png",
     "panel" => "gameserver_query_admin.php",
     "rights" => "GQPG"
 );
-
-/**
-  $inf_sitelink[1] = array(
-  "title" => $locale['gameq_link1'],
-  "url" => "gameq_panel.php",
-  "visibility" => "0"
-  );
- * */
 ?>

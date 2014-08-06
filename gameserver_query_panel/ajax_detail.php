@@ -28,7 +28,7 @@ $servers = GameQ_Create(GameQ_Servers($_GET['id']));
 if ($servers != FALSE) {
     foreach ($servers as $id => $data) {
         if (!$data['gq_online']) {
-            echo "<p>The server did not respond</p>\n";
+            echo $locale['gqp_admin_noresp'];
         } else {
             $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
             $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");

@@ -75,14 +75,12 @@ $(document).ready(function() {
 $error = "";
 opentable($locale['gqp_admin_001']);
 echo "<div id='info'></div>\n";
-echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "'><span class='gqp-sign-in'></span> " . $locale['gqp_admin_002'] . "</a>";
 /* * Server aus DB auslesen* */
 $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " ORDER BY server_order");
 if (dbrows($result) != 0) {
     /// SORTABLE LIST
     $k = 0;
     echo "<ul style='list-style: none;' class='gqp_list panels-list connected'>\n";
-
     while ($data = dbarray($result)) {
         $row_color = ($k % 2 == 0 ? "tbl1" : "tbl2");
         echo "<li id='listItem_" . $data['id'] . "' class='" . $row_color . ($data['active'] == 0 ? " pdisabled" : "") . "'>\n";
@@ -94,7 +92,7 @@ if (dbrows($result) != 0) {
         echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=state'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
-        echo "<button type='submit'><span class='" . ($data['active'] ? "gqp-eye-slash" : "gqp-eye") . "' title='" . ($data['active'] ? "deaktivieren" : "aktivieren") . "'></span></button>";
+        echo "<button type='submit'><span class='" . ($data['active'] ? "gqp-eye-slash" : "gqp-eye") . "' title='" . ($data['active'] ? $locale['gqp_admin_deact'] : $locale['gqp_admin_act']) . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div>";
@@ -106,24 +104,22 @@ if (dbrows($result) != 0) {
         echo "<input type='hidden' name='port' value='" . $data['port'] . "'>";
         echo "<input type='hidden' name='server_order' value='" . $data['server_order'] . "'>";
         echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
-        echo "<button type='submit'><span class='gqp-gear' title='Editieren'></span></button>";
+        echo "<button type='submit'><span class='gqp-gear' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div>";
         echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=del'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-        echo "<button type='submit'><span class='gqp-trash-o' title='L&ouml;schen'></span></button>";
+        echo "<button type='submit'><span class='gqp-trash-o' title='" . $locale['gqp_admin_del'] . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div style='clear:both;'></div>\n";
         echo "</li>\n";
         $k++;
     }
-
-    echo "</ul>\n";    
-} else {
-    echo "<br><b>keine Server Eingetragen!</b>";
+    echo "</ul>\n";
 }
+echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "'><span class='gqp-sign-in'></span> " . $locale['gqp_admin_002'] . "</a>";
 closetable();
 
 //List all supported games
