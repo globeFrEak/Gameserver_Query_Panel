@@ -153,6 +153,6 @@ ul.gqp_list li > div {
 #listItem_1 div {
     vertical-align: middle;
 }
-#listItem_1 div span {
+.gqp_list li div span {
     font-size: 1.8em;
 }

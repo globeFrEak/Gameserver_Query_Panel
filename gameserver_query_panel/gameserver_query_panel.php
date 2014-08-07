@@ -63,5 +63,8 @@ if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale
 openside("<span class='gqp-gamepad'></span> " . $locale['gqp_title'], true, "on");
 echo "<div id='gqp_ajax_panel'></div>";
 echo "<div class='GQP_AjaxRel'><span id='GQP_AjaxRel' class='gqp-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span></div>";
+if (checkrights("GQPG")) {
+    echo "<hr /><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>Admin</a>";
+}
 closeside();
 ?>
