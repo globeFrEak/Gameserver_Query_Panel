@@ -24,6 +24,12 @@ if (!defined("IN_FUSION")) {
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
+$result = dbquery("SELECT panel_template FROM " . DB_GQP_SETTINGS . "");
+while ($data = dbarray($result)) {
+    $template = $data['panel_template'];
+}
+include INFUSIONS . "gameserver_query_panel/templates/" . $template;
+
 $servers = GameQ_Create(GameQ_Servers());
 if ($servers != FALSE) {
     foreach ($servers as $id => $data) {
@@ -32,14 +38,7 @@ if ($servers != FALSE) {
             echo "<h5><span class='gqp-frown-o'></span> " . $data['gq_address'] . ":" . $data['gq_port'] . " no response!</h5>";
             echo "</div>\n";
         } else {
-            $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
-            $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
-            echo "<div>";
-            echo "<h5>$password<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
-            echo "<img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-            echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
-            echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span>";
-            echo "</div>";
+            PanelOut($data, $id);
         }
     }
 }

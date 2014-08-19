@@ -57,8 +57,18 @@ field VARCHAR(60) NULL ,
 PRIMARY KEY (id)
 ) ENGINE=MyISAM;";
 
+$inf_newtable[3] = DB_GQP_SETTINGS . "(
+id INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,
+panel_name VARCHAR(120) NULL ,
+panel_template VARCHAR(60) NULL ,
+PRIMARY KEY (id)
+) ENGINE=MyISAM;";
+
+$inf_insertdbrow[1] = DB_GQP_SETTINGS." (id, panel_name, panel_template) VALUES('', '".$locale['gqp_title']."', 'GQP_Custom_1.php')";
+
 $inf_droptable[1] = DB_GQP_MAIN;
 $inf_droptable[2] = DB_GQP_SERVER_OPT;
+$inf_droptable[3] = DB_GQP_SETTINGS;
 
 $inf_adminpanel[1] = array(
     "title" => $locale['gqp_admin'],

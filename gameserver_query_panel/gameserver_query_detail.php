@@ -65,7 +65,12 @@ add_to_head("<script type=\"text/javascript\">
     });
 </script>");
 
-opentable("<span class='gqp-gamepad'></span> " . $locale['gqp_title']);
+$result = dbquery("SELECT panel_name FROM " . DB_GQP_SETTINGS . "");
+while ($data = dbarray($result)) {
+    $title = $data['panel_name'];
+}
+
+opentable("<span class='gqp-gamepad'></span> " . $title);
 echo "<button id='gqp_ajrel_detail'>click</button>";
 echo "<div id='gqp_ajax_detail'></div>";
 closetable();

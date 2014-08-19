@@ -23,4 +23,7 @@ if (!defined("DB_GQP_MAIN")) {
 if (!defined("DB_GQP_SERVER_OPT")) {
 	define("DB_GQP_SERVER_OPT", DB_PREFIX."gqp_server_options");
 }
+if (!defined("DB_GQP_SETTINGS")) {
+	define("DB_GQP_SETTINGS", DB_PREFIX."gqp_settings");
+}
 ?>

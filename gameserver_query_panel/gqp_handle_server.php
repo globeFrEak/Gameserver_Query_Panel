@@ -92,9 +92,11 @@ $game = (isset($_POST['game']) ? mysql_real_escape_string($_POST['game']) : "");
 $name = (isset($_POST['name']) && strlen($_POST['name']) > 0 ? mysql_real_escape_string($_POST['name']) : $address . "(" . $game . ")");
 $server_order = (isset($_POST['server_order']) && is_numeric($_POST['server_order']) ? mysql_real_escape_string($_POST['server_order']) : "");
 $active = (isset($_POST['active']) && is_numeric($_POST['active']) ? mysql_real_escape_string($_POST['active']) : "");
-
-$server_fields_panel = (isset($_POST['gqp_fields_panel']) ? filter_var_array($_POST['gqp_fields_panel'], FILTER_SANITIZE_STRING) : "");
-$server_fields_detail = (isset($_POST['gqp_fields_detail']) ? filter_var_array($_POST['gqp_fields_detail'], FILTER_SANITIZE_STRING) : "");
+$panel_name = (isset($_POST['panel_name']) ? mysql_real_escape_string($_POST['panel_name']) : $locale['gqp_title']);
+$panel_template = (isset($_POST['panel_template']) ? mysql_real_escape_string($_POST['panel_template']) : "GQP_Custom_1.php");
+        
+$server_fields_panel = (isset($_POST['gqp_fields_panel']) && !empty($_POST['gqp_fields_panel']) ? filter_var_array($_POST['gqp_fields_panel'], FILTER_SANITIZE_STRING) : 0);
+$server_fields_detail = (isset($_POST['gqp_fields_detail']) && !empty($_POST['gqp_fields_detail']) ? filter_var_array($_POST['gqp_fields_detail'], FILTER_SANITIZE_STRING) : 0);
 
 if (isset($_GET['server']) && $_GET['server'] == "add") {
     if (isset($_POST['id'])) {
@@ -103,10 +105,10 @@ if (isset($_GET['server']) && $_GET['server'] == "add") {
             $result = dbquery("UPDATE " . DB_GQP_MAIN . " SET name='$name', address='$address', port='$port', game='$game', server_order='$server_order', active='$active' WHERE id='$id' ");
             //// clear server settings
             $result = dbquery("DELETE FROM " . DB_GQP_SERVER_OPT . " WHERE server_id='$id'");
-            for ($i = 0; $i < count($server_fields_panel); $i++) {
+            for ($i = 0; $i < count($server_fields_panel) && is_array($server_fields_panel); $i++) {
                 $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('','$id',0,'$server_fields_panel[$i]')");
             }
-            for ($i = 0; $i < count($server_fields_detail); $i++) {
+            for ($i = 0; $i < count($server_fields_detail) && is_array($server_fields_detail); $i++) {
                 $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('','$id',1,'$server_fields_detail[$i]')");
             }
             redirect("gameserver_query_admin.php" . $aidlink);
@@ -138,29 +140,34 @@ if (isset($_GET['server']) && $_GET['server'] == "state") {
     redirect("gameserver_query_admin.php" . $aidlink);
 }
 
+if (isset($_GET['settings']) && $_GET['settings'] == "edit") {
+    $result = dbquery("UPDATE " . DB_GQP_SETTINGS . " SET panel_name='$panel_name', panel_template='$panel_template' WHERE id='$id' ");
+    redirect("gameserver_query_admin.php" . $aidlink);
+}
+
 /* * Server hinzufuegen/editieren * */
-$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='".$locale['gqp_admin_005']."'></span></button></a>";
+$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='" . $locale['gqp_admin_005'] . "'></span></button></a>";
 opentable((isset($_GET['server']) && $_GET['server'] == "edit" ? $locale['gqp_admin_006'] . $exit : $locale['gqp_admin_002']));
 echo "<div id='gqp_server_form'>";
 echo "<form id='gqpserver' name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
 if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<input type='hidden' name='id' value='$id' />";
 
-    echo "<label>".$locale['gqp_admin_007']."</label>";
-    echo "<input name='name' type='text' size='20' maxlength='50' value='$name' /><br>\n";
+    echo "<label>" . $locale['gqp_admin_007'] . "</label>";
+    echo "<input name='name' type='text' size='20' maxlength='50' value='$name' />\n";
 
-    echo "<label>".$locale['gqp_admin_008']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_008'] . "</label>\n";
     echo "<select name='game' class='textbox' maxlength='30'>"
     . GameQ_Games($game, 'dropdown')
     . "</select>";
 
-    echo "<label>".$locale['gqp_admin_009']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_009'] . "</label>\n";
     echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' value='$address' />\n";
 
-    echo "<label>".$locale['gqp_admin_010']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_010'] . "</label>\n";
     echo "<input id='gqp_port' name='port' type='text' size='2' maxlength='6' value='$port' placeholder='27015' />\n";
 
-    echo "<label>".$locale['gqp_admin_011']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_011'] . "</label>\n";
     if (isset($active) && $active == "1") {
         echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' checked />\n";
     } else {
@@ -188,28 +195,28 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
                 echo "<label>Panel + Detail Anzeige</label><br>\n";
                 foreach ($data as $key => $value) {
                     echo "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_panel[]' value='$key' " . (in_array($key, $saved_fields_panel) ? "checked" : "") . " />"
-                    . "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_detail[]' value='$key' " . (in_array($key, $saved_fields_detail) ? "checked" : "") . " />$key</b><br>";
+                    . "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_detail[]' value='$key' " . (in_array($key, $saved_fields_detail) ? "checked" : "") . " /><b>$key</b> - ($value)<br>";
                 }
                 echo "</div><br>";
             }
         }
     }
 } else {
-    echo "<label>".$locale['gqp_admin_007']."</label>\n";
-    echo "<input name='name' type='text' size='20' maxlength='50' placeholder='".$locale['gqp_admin_007a']."' /><br>\n";
-    echo "<label>".$locale['gqp_admin_008']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_007'] . "</label>\n";
+    echo "<input name='name' type='text' size='20' maxlength='50' placeholder='" . $locale['gqp_admin_007a'] . "' /><br>\n";
+    echo "<label>" . $locale['gqp_admin_008'] . "</label>\n";
     echo "<select name='game' class='textbox' maxlength='30'>"
     . GameQ_Games($game, 'dropdown')
     . "</select><br>\n";
-    echo "<label>".$locale['gqp_admin_009']."</label>\n";
-    echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' placeholder='".$locale['gqp_admin_009a']."' /><br>\n";
-    echo "<label>".$locale['gqp_admin_010']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_009'] . "</label>\n";
+    echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' placeholder='" . $locale['gqp_admin_009a'] . "' /><br>\n";
+    echo "<label>" . $locale['gqp_admin_010'] . "</label>\n";
     echo "<input id='gqp_port' name='port' type='text' size='2' maxlength='6' placeholder='' /><br>\n";
-    echo "<label>".$locale['gqp_admin_011']."</label>\n";
+    echo "<label>" . $locale['gqp_admin_011'] . "</label>\n";
     echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' checked /><br>\n";
 }
-echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='".$locale['gqp_admin_edit']."'></span></button>";
-echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='".$locale['gqp_admin_005']."'></span></button>";
+echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
+echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='" . $locale['gqp_admin_005'] . "'></span></button>";
 echo "</form>\n";
 echo "</div>";
 echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";

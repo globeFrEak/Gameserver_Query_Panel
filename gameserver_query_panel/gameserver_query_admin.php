@@ -122,9 +122,32 @@ if (dbrows($result) != 0) {
 echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "'><span class='gqp-sign-in'></span> " . $locale['gqp_admin_002'] . "</a>";
 closetable();
 
+//Settings Form
+$result = dbquery("SELECT * FROM " . DB_GQP_SETTINGS . "");
+if (dbrows($result) != 0) {
+    while ($data = dbarray($result)) {
+        opentable("Settings");
+        echo "<div id='gqp_server_form'>";
+        echo "<form name='settings' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&settings=edit' > ";
+        echo "<input type='hidden' name='id' value='" . $data['id'] . "' > ";
+        echo "<label>Panel Name:</label>";
+        echo "<input name='panel_name' value='" . $data['panel_name'] . "' > ";
+        echo "<label>Panel Template</label>";
+        echo "<select name='panel_template'>";
+        foreach (GameQ_ScanDir() as $key => $value) {
+            echo "<option value=$value " . ($value == $data['panel_template'] ? 'selected' : '') . ">$value</option>";
+        }
+        echo "</select>";
+        echo "<button type='submit'><span class='gqp-check' title='" . $locale['gqp_admin_edit'] . "' > </span></button>";
+        echo "</form>";
+        echo "</div>";
+        closetable();
+    }
+}
+
 //List all supported games
-opentable("Game list - " . GameQ_Games('', 'count') . " games supported <span id='gqp_gl_btn' class='gqp-chevron-down'></span>");
-echo "<div id='gqp_gamelist' style='display:none;'>";
+opentable("Game list - " . GameQ_Games('', 'count') . " games supported <span id = 'gqp_gl_btn' class = 'gqp-chevron-down'></span>");
+echo "<div id = 'gqp_gamelist' style = 'display:none;'>";
 echo GameQ_Games();
 echo "</div>";
 closetable();

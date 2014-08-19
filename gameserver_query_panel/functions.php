@@ -41,7 +41,7 @@ function GameQ_Servers($id = FALSE) {
     }
     $rows = dbrows($result_detail);
     if ($rows != 0) {
-        $Servers_GameQ = array();        
+        $Servers_GameQ = array();
         for ($i = 0; $data = dbarray($result_detail); $i++) {
             $Servers_GameQ[$i]['id'] = $data['id'];
             $Servers_GameQ[$i]['type'] = $data['game'];
@@ -127,4 +127,17 @@ function GameQ_GetInfo($game, $return = 'N') {
     }
     unset($class);
 }
+
+function GameQ_ScanDir() {
+    $result = array();
+    $dir = scandir(INFUSIONS . "gameserver_query_panel/templates");
+    foreach ($dir as $key => $value) {
+        $ext = substr($value, strrpos($value, '.') + 1);
+        if (in_array($ext, array("php"))) {
+            $result[] = $value;
+        }
+    }
+    return $result;
+}
+
 ?>
