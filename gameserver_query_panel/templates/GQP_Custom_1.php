@@ -17,7 +17,7 @@
   | written permission from the original author(s).
   +-------------------------------------------------------- */
 
-//Panel
+//panel
 function PanelOut($data, $id) {
     $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
     $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
@@ -29,7 +29,7 @@ function PanelOut($data, $id) {
     echo "</div>";
 }
 
-//Detail
+//detail
 function DetailOut($data) {
     $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
     $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
@@ -52,5 +52,4 @@ function DetailOut($data) {
     }
     echo "</div>";
 }
-
 ?>

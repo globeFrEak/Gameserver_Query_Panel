@@ -28,7 +28,7 @@ $result = dbquery("SELECT panel_template FROM " . DB_GQP_SETTINGS . "");
 while ($data = dbarray($result)) {
     $template = $data['panel_template'];
 }
-include_once INFUSIONS . "gameserver_query_panel/templates/" . $template;
+require_once INFUSIONS . "gameserver_query_panel/templates/" . $template;
 
 $servers = GameQ_Create(GameQ_Servers($_GET['id']));
 if ($servers != FALSE) {
