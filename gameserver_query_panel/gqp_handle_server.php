@@ -152,6 +152,7 @@ echo "<div id='gqp_server_form'>";
 echo "<form id='gqpserver' name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
 if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<input type='hidden' name='id' value='$id' />";
+    echo "<input type='hidden' name='server_order' value='$server_order' />";
 
     echo "<label>" . $locale['gqp_admin_007'] . "</label>";
     echo "<input name='name' type='text' size='20' maxlength='50' value='$name' />\n";
