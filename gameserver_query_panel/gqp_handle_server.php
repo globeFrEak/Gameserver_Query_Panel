@@ -94,7 +94,7 @@ $server_order = (isset($_POST['server_order']) && is_numeric($_POST['server_orde
 $active = (isset($_POST['active']) && is_numeric($_POST['active']) ? mysql_real_escape_string($_POST['active']) : "");
 $panel_name = (isset($_POST['panel_name']) ? mysql_real_escape_string($_POST['panel_name']) : $locale['gqp_title']);
 $panel_template = (isset($_POST['panel_template']) ? mysql_real_escape_string($_POST['panel_template']) : "GQP_Custom_1.php");
-        
+
 $server_fields_panel = (isset($_POST['gqp_fields_panel']) && !empty($_POST['gqp_fields_panel']) ? filter_var_array($_POST['gqp_fields_panel'], FILTER_SANITIZE_STRING) : 0);
 $server_fields_detail = (isset($_POST['gqp_fields_detail']) && !empty($_POST['gqp_fields_detail']) ? filter_var_array($_POST['gqp_fields_detail'], FILTER_SANITIZE_STRING) : 0);
 
@@ -103,14 +103,6 @@ if (isset($_GET['server']) && $_GET['server'] == "add") {
         $result = dbquery("SELECT * FROM " . DB_GQP_MAIN . " WHERE id = '$id'");
         if (dbrows($result) != 0) {
             $result = dbquery("UPDATE " . DB_GQP_MAIN . " SET name='$name', address='$address', port='$port', game='$game', server_order='$server_order', active='$active' WHERE id='$id' ");
-            //// clear server settings
-            $result = dbquery("DELETE FROM " . DB_GQP_SERVER_OPT . " WHERE server_id='$id'");
-            for ($i = 0; $i < count($server_fields_panel) && is_array($server_fields_panel); $i++) {
-                $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('','$id',0,'$server_fields_panel[$i]')");
-            }
-            for ($i = 0; $i < count($server_fields_detail) && is_array($server_fields_detail); $i++) {
-                $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('','$id',1,'$server_fields_detail[$i]')");
-            }
             redirect("gameserver_query_admin.php" . $aidlink);
         } else {
             $error = $locale['gqp_admin_004'];
@@ -125,6 +117,11 @@ if (isset($_GET['server']) && $_GET['server'] == "add") {
             $neworder = 1;
         }
         $result = dbquery("INSERT INTO " . DB_GQP_MAIN . " (id, name, address, port, game, server_order, active) VALUES ('', '$name', '$address', '$port', '$game', '$neworder', '$active')");
+        $server_opt = array("gq_joinlink", "gq_hostname", "gq_type", "gq_mapname", "gq_numplayers", "gq_maxplayers", "gq_password");
+        $last_id = mysql_insert_id();
+        foreach ($server_opt as $key => $value) {
+            $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('', '$last_id', '0', '$value')");
+        }
         redirect("gameserver_query_admin.php" . $aidlink);
     }
 }
@@ -175,33 +172,35 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
         echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' />\n";
     }
     echo "</br>";
-    $servers = GameQ_Create(GameQ_Servers($id));
-    if ($servers != FALSE) {
-        $result = dbquery("SELECT field, panel FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='$id'");
-        $saved_fields_panel = array();
-        $saved_fields_detail = array();
-        if (dbrows($result) != 0) {
-            for ($i = 0; $data = dbarray($result); $i++) {
-                if ($data['panel'] == 0) {
-                    $saved_fields_panel[$i] = $data['field'];
-                } else {
-                    $saved_fields_detail[$i] = $data['field'];
-                }
-            }
-        }
-        foreach ($servers as $id => $data) {
-            if ($data['gq_online']) {
-                echo "<label id='gqp_gl_btn'>" . $locale['gqp_admin_003'] . "<span class='gqp-chevron-down'></span></label>";
-                echo "<div id='gqp_gamelist' style='display:none;'>";
-                echo "<label>Panel + Detail Anzeige</label><br>\n";
-                foreach ($data as $key => $value) {
-                    echo "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_panel[]' value='$key' " . (in_array($key, $saved_fields_panel) ? "checked" : "") . " />"
-                    . "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_detail[]' value='$key' " . (in_array($key, $saved_fields_detail) ? "checked" : "") . " /><b>$key</b> - ($value)<br>";
-                }
-                echo "</div><br>";
-            }
-        }
-    }
+    /**
+      $servers = GameQ_Create(GameQ_Servers($id));
+      if ($servers != FALSE) {
+      $result = dbquery("SELECT field, panel FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='$id'");
+      $saved_fields_panel = array();
+      $saved_fields_detail = array();
+      if (dbrows($result) != 0) {
+      for ($i = 0; $data = dbarray($result); $i++) {
+      if ($data['panel'] == 0) {
+      $saved_fields_panel[$i] = $data['field'];
+      } else {
+      $saved_fields_detail[$i] = $data['field'];
+      }
+      }
+      }
+      foreach ($servers as $id => $data) {
+      if ($data['gq_online']) {
+      echo "<label id='gqp_gl_btn'>" . $locale['gqp_admin_003'] . "<span class='gqp-chevron-down'></span></label>";
+      echo "<div id='gqp_gamelist' style='display:none;'>";
+      echo "<label>Panel + Detail Anzeige</label><br>\n";
+      foreach ($data as $key => $value) {
+      echo "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_panel[]' value='$key' " . (in_array($key, $saved_fields_panel) ? "checked" : "") . " />"
+      . "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_detail[]' value='$key' " . (in_array($key, $saved_fields_detail) ? "checked" : "") . " /><b>$key</b> - ($value)<br>";
+      }
+      echo "</div><br>";
+      }
+      }
+      }
+     * */
 } else {
     echo "<label>" . $locale['gqp_admin_007'] . "</label>\n";
     echo "<input name='name' type='text' size='20' maxlength='50' placeholder='" . $locale['gqp_admin_007a'] . "' /><br>\n";

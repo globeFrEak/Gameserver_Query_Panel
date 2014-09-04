@@ -108,6 +108,11 @@ if (dbrows($result) != 0) {
         echo "</form>";
         echo "</div>";
         echo "<div>";
+        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_srvfields.php" . $aidlink . "&id=".$data['id']."'>";
+        echo "<button type='submit'><span class=' gqp-gamepad' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
+        echo "</form>";
+        echo "</div>";
+        echo "<div>";
         echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=del'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<button type='submit'><span class='gqp-trash-o' title='" . $locale['gqp_admin_del'] . "'></span></button>";
@@ -132,12 +137,14 @@ if (dbrows($result) != 0) {
         echo "<input type='hidden' name='id' value='" . $data['id'] . "' > ";
         echo "<label>Panel Name:</label>";
         echo "<input name='panel_name' value='" . $data['panel_name'] . "' > ";
+        /**
         echo "<label>Panel Template</label>";
         echo "<select name='panel_template'>";
         foreach (GameQ_ScanDir() as $key => $value) {
             echo "<option value=$value " . ($value == $data['panel_template'] ? 'selected' : '') . ">$value</option>";
         }
         echo "</select>";
+        **/
         echo "<button type='submit'><span class='gqp-check' title='" . $locale['gqp_admin_edit'] . "' > </span></button>";
         echo "</form>";
         echo "</div>";
