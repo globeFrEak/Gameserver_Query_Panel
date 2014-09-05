@@ -47,7 +47,7 @@ add_to_head("<script type=\"text/javascript\">
         });
     }
     jQuery(document).ready(function() {
-        $('#GQP_AjaxRel').click(function(){
+        $('#gqp_ajaxrel').click(function(){
             gqp_ajax_panel();
         });
         gqp_ajax_panel_reload();        
@@ -67,9 +67,10 @@ while ($data = dbarray($result)) {
 
 openside("<span class='gqp-gamepad'></span> " . $title, true, "on");
 echo "<div id='gqp_ajax_panel'></div>";
-echo "<div class='GQP_AjaxRel'><span id='GQP_AjaxRel' class='gqp-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span></div>";
+echo "<hr />";
+echo "<span id='gqp_ajaxrel' class='gqp-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span>";
 if (checkrights("GQPG")) {
-    echo "<hr /><a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>Admin</a>";
+    echo "<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>Admin</a>";
 }
 closeside();
 ?>

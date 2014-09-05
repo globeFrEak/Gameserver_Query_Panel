@@ -95,13 +95,14 @@
     vertical-align:middle;
     margin-left:1em;
 }
-.GQP_AjaxRel{
-    text-align: right;
+#gqp_ajaxrel {
+    float: right;
+    margin-top: .1em;
 }
-#GQP_AjaxRel:hover, #GQP_AjaxRel:focus{
+#gqp_ajaxrel:hover, #gqp_ajaxrel:focus{
     -webkit-animation:spin 1s linear infinite;
     -moz-animation:spin 1s linear infinite;
-    animation:spin 1s linear infinite;
+    animation:spin 1s linear infinite;    
 }
 @-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
