@@ -26,19 +26,19 @@ if (!checkrights("GQPG") || !defined("iAUTH") || !isset($_GET['aid']) || $_GET['
 }
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
-    include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
+if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
+    include GQPBASE . "locale/" . $settings['locale'] . ".php";
 } else {
-    include INFUSIONS . "gameserver_query_panel/locale/English.php";
+    include GQPBASE . "locale/English.php";
 }
-add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
 add_to_head("<script>
 $(document).ready(function() {     
     //set default game port on placeholder tag    
     $(\"select[name='game']\").change(function() {
     var gametype = $(this).val();
     $.ajax({
-    url:'" . INFUSIONS . "gameserver_query_panel/ajax_admin.php',
+    url:'" . GQPBASE . "ajax_admin.php',
         data: {game: gametype},            
         type: 'post',
         success: function(data) { 
@@ -119,8 +119,10 @@ if (isset($_GET['server']) && $_GET['server'] == "add") {
         $result = dbquery("INSERT INTO " . DB_GQP_MAIN . " (id, name, address, port, game, server_order, active) VALUES ('', '$name', '$address', '$port', '$game', '$neworder', '$active')");
         $server_opt = array("gq_joinlink", "gq_hostname", "gq_type", "gq_mapname", "gq_numplayers", "gq_maxplayers", "gq_password");
         $last_id = mysql_insert_id();
+        $i == 0;
         foreach ($server_opt as $key => $value) {
-            $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('', '$last_id', '0', '$value')");
+            $i++;
+            $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, side, icon, field, field_order) VALUES ('', '$last_id', '0', '1', '', '$value', '$i')");
         }
         redirect("gameserver_query_admin.php" . $aidlink);
     }
@@ -219,7 +221,7 @@ echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='" . $l
 echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='" . $locale['gqp_admin_005'] . "'></span></button>";
 echo "</form>\n";
 echo "</div>";
-echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";
+echo "<a class='gqp_a' href='" . GQPBASE . "gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";
 closetable();
 require_once(THEMES . "templates/footer.php");
 ?>

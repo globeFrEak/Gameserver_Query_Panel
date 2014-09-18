@@ -18,11 +18,14 @@
   +-------------------------------------------------------- */
 require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
 
+define("GQPBASE", BASEDIR."infusions/gameserver_query_panel/");
+define("GQPIMG", GQPBASE."images/");
+
 function GameQ_Create($servers) {
     if ($servers != FALSE) {
         $gq = new GameQ();
         $gq->addServers($servers);
-        $gq->setOption('timeout', 1);
+        $gq->setOption('timeout', 5);
         $gq->setFilter('normalise');
         return $gq->requestData();
     } else {
@@ -54,7 +57,7 @@ function GameQ_Servers($id = FALSE) {
 }
 
 function GameQ_Games($select = FALSE, $option = 'list') {
-    require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
+    require_once GQPBASE . "GameQ/GameQ.php";
     $protocols_path = GAMEQ_BASE . "gameq/protocols/";
     $dir = dir($protocols_path);
     $protocols = array();
@@ -108,7 +111,7 @@ function GameQ_Games($select = FALSE, $option = 'list') {
 }
 
 function GameQ_GetInfo($game, $return = 'N') {
-    require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
+    require_once GQPBASE . "GameQ/GameQ.php";
     $protocols = array();
     $class_name = 'GameQ_Protocols_' . ucfirst(pathinfo($game, PATHINFO_FILENAME));
     $reflection = new ReflectionClass($class_name);
@@ -127,10 +130,10 @@ function GameQ_GetInfo($game, $return = 'N') {
     }
     unset($class);
 }
-
+//unused
 function GameQ_ScanDir() {
     $result = array();
-    $dir = scandir(INFUSIONS . "gameserver_query_panel/templates");
+    $dir = scandir(GQPBASE . "templates");
     foreach ($dir as $key => $value) {
         $ext = substr($value, strrpos($value, '.') + 1);
         if (in_array($ext, array("php"))) {

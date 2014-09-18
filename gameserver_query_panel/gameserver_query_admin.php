@@ -26,14 +26,13 @@ if (!checkrights("GQPG") || !defined("iAUTH") || !isset($_GET['aid']) || $_GET['
 }
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
-    include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
+if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
+    include GQPBASE . "locale/" . $settings['locale'] . ".php";
 } else {
-    include INFUSIONS . "gameserver_query_panel/locale/English.php";
+    include GQPBASE . "locale/English.php";
 }
-
 add_to_head("<script type='text/javascript' src='" . INCLUDES . "jquery/jquery-ui.js'></script>");
-add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
 add_to_head("<script>
 $(document).ready(function() {
     //sortable server list
@@ -86,17 +85,17 @@ if (dbrows($result) != 0) {
         echo "<li id='listItem_" . $data['id'] . "' class='" . $row_color . ($data['active'] == 0 ? " pdisabled" : "") . "'>\n";
         echo "<div><span class='gqp-arrows-alt handle'></span></div>\n";
         echo "<div>" . $data['name'] . "</div>\n";
-        echo "<div><img src='" . INFUSIONS . "gameserver_query_panel/images/games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
+        echo "<div><img src='" . GQPIMG . "games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
         echo "<div>" . $data['address'] . ":" . $data['port'] . "</div>\n";
         echo "<div>";
-        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=state'>";
+        echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "&server=state'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
         echo "<button type='submit'><span class='" . ($data['active'] ? "gqp-eye-slash" : "gqp-eye") . "' title='" . ($data['active'] ? $locale['gqp_admin_deact'] : $locale['gqp_admin_act']) . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div>";
-        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=edit'>";
+        echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "&server=edit'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<input type='hidden' name='name' value='" . $data['name'] . "'>";
         echo "<input type='hidden' name='game' value='" . $data['game'] . "'>";
@@ -108,12 +107,12 @@ if (dbrows($result) != 0) {
         echo "</form>";
         echo "</div>";
         echo "<div>";
-        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_srvfields.php" . $aidlink . "&id=".$data['id']."'>";
+        echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_srvfields.php" . $aidlink . "&id=".$data['id']."'>";
         echo "<button type='submit'><span class=' gqp-gamepad' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div>";
-        echo "<form name='addserver' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&server=del'>";
+        echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "&server=del'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
         echo "<button type='submit'><span class='gqp-trash-o' title='" . $locale['gqp_admin_del'] . "'></span></button>";
         echo "</form>";
@@ -124,7 +123,7 @@ if (dbrows($result) != 0) {
     }
     echo "</ul>\n";
 }
-echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "'><span class='gqp-sign-in'></span> " . $locale['gqp_admin_002'] . "</a>";
+echo "<a class='gqp_a' href='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "'><span class='gqp-sign-in'></span> " . $locale['gqp_admin_002'] . "</a>";
 closetable();
 
 //Settings Form
@@ -133,7 +132,7 @@ if (dbrows($result) != 0) {
     while ($data = dbarray($result)) {
         opentable("Settings");
         echo "<div id='gqp_server_form'>";
-        echo "<form name='settings' method='post' action='" . INFUSIONS . "gameserver_query_panel/gqp_handle_server.php" . $aidlink . "&settings=edit' > ";
+        echo "<form name='settings' method='post' action='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "&settings=edit' > ";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "' > ";
         echo "<label>Panel Name:</label>";
         echo "<input name='panel_name' value='" . $data['panel_name'] . "' > ";
@@ -158,6 +157,6 @@ echo "<div id = 'gqp_gamelist' style = 'display:none;'>";
 echo GameQ_Games();
 echo "</div>";
 closetable();
-include_once INFUSIONS . "gameserver_query_panel/copyright.php";
+include_once GQPBASE . "copyright.php";
 require_once(THEMES . "templates/footer.php");
 ?>

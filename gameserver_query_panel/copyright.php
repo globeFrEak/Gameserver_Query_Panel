@@ -16,7 +16,7 @@
   | copyright header is strictly prohibited without
   | written permission from the original author(s).
   +-------------------------------------------------------- */
-echo "<img style='float:right;' src='" . INFUSIONS . "gameserver_query_panel/icon.png' alt='" . $locale['gqp_title'] . "' title='" . $locale['gqp_title'] . "'/>";
+echo "<img style='float:right;' src='" . GQPBASE . "icon.png' alt='" . $locale['gqp_title'] . "' title='" . $locale['gqp_title'] . "'/>";
 echo "<div class='gqp_copyright'>"
  . "" . $locale['gqp_title'] . " 2014 by </br>"
  . "<a href='http://www.cwclan.de' alt='CWCLAN.de' target='_blank'>globeFrEak</a>&nbsp;"

@@ -28,7 +28,8 @@ $result = dbquery("SELECT panel_template FROM " . DB_GQP_SETTINGS . "");
 while ($data = dbarray($result)) {
     $template = $data['panel_template'];
 }
-require_once INFUSIONS . "gameserver_query_panel/templates/" . $template;
+require_once GQPBASE . "templates/" . $template;
+
 
 $servers = GameQ_Create(GameQ_Servers());
 if ($servers != FALSE) {
@@ -38,7 +39,7 @@ if ($servers != FALSE) {
             echo "<h5><span class='gqp-frown-o'></span> " . $data['gq_address'] . ":" . $data['gq_port'] . " no response!</h5>";
             echo "</div>\n";
         } else {
-            PanelOut($data, $id);
+            PanelOut($data, $id);            
         }
     }
 }

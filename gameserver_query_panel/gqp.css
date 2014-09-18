@@ -157,3 +157,26 @@ ul.gqp_list li > div {
 .gqp_list li div span {
     font-size: 1.8em;
 }
+.gqpmumblelist li {
+    list-style-image: url(images/mumble/list_player.png);    
+}
+/** PANEL **/
+.gqpp-server {
+    width: 100%;
+}
+.gqpp-server img {
+    margin: 0.1em;
+}
+.gqpp-right {
+    float: right;    
+}
+.gqpp-left {
+    width: 50%;
+    margin-right: 50%;
+}
+.gqpp-left div, .gqpp-right div {
+    margin: 0.1em 0;
+} 
+.gqpp-clear {
+    clear: both;
+}

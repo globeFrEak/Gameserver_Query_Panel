@@ -1,5 +1,4 @@
 <?php
-
 /* -------------------------------------------------------+
   | PHP-Fusion Content Management System
   | Copyright (C) 2002 - 2013 Nick Jones
@@ -21,13 +20,14 @@ if (!defined("IN_FUSION")) {
 }
 
 include INFUSIONS . "gameserver_query_panel/infusion_db.php";
+include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
 
 add_to_head("<script type=\"text/javascript\">
     function gqp_ajax_panel() {
         $.ajax({
-            url:'" . INFUSIONS . "gameserver_query_panel/ajax_panel.php',
+            url:'" . GQPBASE . "ajax_panel.php',
             beforeSend:function(){
                 $('#gqp_ajax_panel').fadeOut('slow');
             },
@@ -39,7 +39,7 @@ add_to_head("<script type=\"text/javascript\">
     }
     function gqp_ajax_panel_reload() {
         $.ajax({
-            url:'" . INFUSIONS . "gameserver_query_panel/ajax_panel.php',            
+            url:'" . GQPBASE . "ajax_panel.php',            
             success:function(data){
                 $('#gqp_ajax_panel').html(data);
             },
@@ -54,10 +54,10 @@ add_to_head("<script type=\"text/javascript\">
     });
 </script>");
 
-if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
-    include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
+if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
+    include GQPBASE . "locale/" . $settings['locale'] . ".php";
 } else {
-    include INFUSIONS . "gameserver_query_panel/locale/English.php";
+    include GQPBASE . "locale/English.php";
 }
 
 $result = dbquery("SELECT panel_name FROM " . DB_GQP_SETTINGS . "");
@@ -70,7 +70,47 @@ echo "<div id='gqp_ajax_panel'></div>";
 echo "<hr />";
 echo "<span id='gqp_ajaxrel' class='gqp-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span>";
 if (checkrights("GQPG")) {
-    echo "<a href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>Admin</a>";
+    echo "<a href='" . GQPBASE . "gameserver_query_admin.php" . $aidlink . "'>Admin</a>";
 }
+?>
+<!--
+<div>
+    <div class='gqpp-server'>
+        <h5><a href="../../infusions/gameserver_query_panel/gameserver_query_detail.php?id=1">CW Fortress #1[CW][GER] by cwclan.de</a><a href="steam://connect/server.cwclan.de:27015/" alt="Verbinden mit CW Fortress #1[CW][GER] by cwclan.de" title="Verbinden mit CW Fortress #1[CW][GER] by cwclan.de"><span class="gqp-sign-in"></span></a></h5>
+        <div class='gqpp-right'>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+        </div>
+        <div class='gqpp-left'>
+            <div><span class="gqp-globe"></span> pl_badwater</div>
+            <div><span class="gqp-globe"></span> pl_badwater</div>
+            <div><span class="gqp-globe"></span> pl_badwater</div>
+        </div>        
+    </div>
+    <div class='gqpp-clear'></div>
+    <div class='gqpp-server'>
+        <h5><img src="../../infusions/gameserver_query_panel/images/games/tf2.jpg" alt="Team Fortress 2" title="Team Fortress 2" height="16" width="16"><a href="../../infusions/gameserver_query_panel/gameserver_query_detail.php?id=1">CW Fortress #1[CW][GER] by cwclan.de</a><a href="steam://connect/server.cwclan.de:27015/" alt="Verbinden mit CW Fortress #1[CW][GER] by cwclan.de" title="Verbinden mit CW Fortress #1[CW][GER] by cwclan.de"><span class="gqp-sign-in"></span></a></h5>
+        <div class='gqpp-right'>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+            <div>0/24 <span class="gqp-group"></span></div>
+        </div>
+        <div class='gqpp-left'>
+            <div><span class="gqp-globe"></span> pl_badwater</div>
+            <div><span class="gqp-globe"></span> pl_badwater</div>
+            <div><span class="gqp-globe"></span> pl_badwater</div>
+        </div>        
+    </div>
+    <div class='gqpp-clear'></div>
+</div>
+--!>
+<?php
 closeside();
 ?>

@@ -26,12 +26,12 @@ if (!checkrights("GQPG") || !defined("iAUTH") || !isset($_GET['aid']) || $_GET['
 }
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-if (file_exists(INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php")) {
-    include INFUSIONS . "gameserver_query_panel/locale/" . $settings['locale'] . ".php";
+if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
+    include GQPBASE . "locale/" . $settings['locale'] . ".php";
 } else {
-    include INFUSIONS . "gameserver_query_panel/locale/English.php";
+    include GQPBASE . "locale/English.php";
 }
-add_to_head("<link rel='stylesheet' href='" . INFUSIONS . "gameserver_query_panel/gqp.css' type='text/css'/>");
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
 add_to_head("<script>
 $(document).ready(function() {
     $('#gqp_field_sel').on('change', function() {
@@ -51,7 +51,7 @@ if (dbrows($result) != 0) {
     $data = dbarray($result);
     // form actions
     if (isset($_GET['server']) && $_GET['server'] == "add") {
-        $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, field) VALUES ('', '$id', '0', '$server_field_panel')");
+        $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, side, icon, field, field_order) VALUES ('', '$id', '0', '1', '', '$server_field_panel', '')");
         //redirect(FUSION_SELF . $aidlink);
     }    
     if (isset($_GET['server']) && $_GET['server'] == "del") {        
@@ -64,7 +64,7 @@ if (dbrows($result) != 0) {
     echo "<h5>" . $data['name'] . "</h5>";
     $servers = GameQ_Create(GameQ_Servers($data['id']));
     if ($servers != FALSE) {
-        $result = dbquery("SELECT id, field, panel FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='" . $data['id'] . "'");
+        $result = dbquery("SELECT * FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='" . $data['id'] . "'");
         $saved_fields_panel = array();        
         if (dbrows($result) != 0) {
             for ($i = 0; $data_f = dbarray($result); $i++) {
