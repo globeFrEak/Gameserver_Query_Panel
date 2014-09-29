@@ -39,7 +39,7 @@ if ($servers != FALSE) {
             echo "<h5><span class='gqp-frown-o'></span> " . $data['gq_address'] . ":" . $data['gq_port'] . " no response!</h5>";
             echo "</div>\n";
         } else {
-            PanelOut($data, $id);            
+            PanelOut($data, $id);
         }
     }
 }

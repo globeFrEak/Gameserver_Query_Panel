@@ -23,7 +23,7 @@ function PanelOut($data, $id) {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         echo "<div class='gqpp-server'>";
-        echo "<h5>$password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";        
+        echo "<h5>$password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
         echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span>";
@@ -32,10 +32,9 @@ function PanelOut($data, $id) {
     } else {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
-        echo "<div>";
+        echo "<div class='gqpp-server'>";
         echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span>";
-        echo "</div>";
 
         if ($data['gq_numplayers'] > 0) {
             $players = $data['players'];
@@ -48,7 +47,7 @@ function PanelOut($data, $id) {
 
             usort($players, 'sortByChannel');
 
-            // combine players with channels
+            // combine arrays (players with channels)
             $player_channel = array();
             foreach ($channels AS $ckey => $cvalue) {
                 foreach ($players AS $pkey => $pvalue) {
@@ -59,20 +58,21 @@ function PanelOut($data, $id) {
             }
             // output channel and players
             foreach ($player_channel AS $key => $value) {
-                echo "<h5><img src='" . GQPIMG . "mumble/list_channel.png' alt='channel'/>" . $channels[$key]['gq_name'] . " [" . count($value) . "]</h5>";
+                echo "<h6><img src='" . GQPIMG . "mumble/list_channel.png' alt='channel'/>" . $channels[$key]['gq_name'] . " [" . count($value) . "]</h6>";
                 echo "<ul class='gqpmumblelist'>";
                 foreach ($value AS $pkey => $pvalue) {
                     echo "<li>";
                     echo $players[$pvalue]['gq_name'];
                     echo ($players[$pvalue]['suppress'] == 1 ? "<img src='" . GQPIMG . "mumble/player_suppressed.png' alt='suppressed'/>" : "");
                     echo ($players[$pvalue]['selfMute'] == 1 ? "<img src='" . GQPIMG . "mumble/player_selfmute.png' alt='selfmute'/>" : "");
-                    echo ($players[$pvalue]['selfDute'] == 1 ? "<img src='" . GQPIMG . "mumble/player_selfdeaf.png' alt='selfdeaf'/>" : "");
+                    echo ($players[$pvalue]['selfDeaf'] == 1 ? "<img src='" . GQPIMG . "mumble/player_selfdeaf.png' alt='selfdeaf'/>" : "");
                     echo ($players[$pvalue]['userid'] != -1 ? "<img src='" . GQPIMG . "mumble/player_auth.png' alt='suppressed'/>" : "");
                     echo "</li>";
                 }
                 echo "</ul>";
             }
-        }        
+        }
+        echo "</div>";
         echo "<div class='gqpp-clear'></div>";
     }
 }
@@ -82,7 +82,7 @@ function DetailOut($data) {
     if (!$data['gq_type'] == 'mumble') {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
-        echo "<div>";
+        echo "<div class='gqpp-server'>";
         echo "<h5>$password" . $data['gq_hostname'] . "$join</h5>";
         echo "<div><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
         echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
@@ -106,7 +106,7 @@ function DetailOut($data) {
     } else {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
-        echo "<div>";
+        echo "<div class='gqpp-server'>";
         echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password" . $data['gq_hostname'] . "$join</h5>";
         echo "<div>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
@@ -120,10 +120,9 @@ function DetailOut($data) {
             function sortByChannel($a, $b) {
                 return $a['channel'] - $b['channel'];
             }
-
             usort($players, 'sortByChannel');
 
-            // combine players with channels
+            // combine arrays (players with channels)
             $player_channel = array();
             foreach ($channels AS $ckey => $cvalue) {
                 foreach ($players AS $pkey => $pvalue) {
@@ -141,7 +140,7 @@ function DetailOut($data) {
                     echo $players[$pvalue]['gq_name'];
                     echo ($players[$pvalue]['suppress'] == 1 ? "<img src='" . GQPIMG . "mumble/player_suppressed.png' alt='suppressed'/>" : "");
                     echo ($players[$pvalue]['selfMute'] == 1 ? "<img src='" . GQPIMG . "mumble/player_selfmute.png' alt='selfmute'/>" : "");
-                    echo ($players[$pvalue]['selfDute'] == 1 ? "<img src='" . GQPIMG . "mumble/player_selfdeaf.png' alt='selfdeaf'/>" : "");
+                    echo ($players[$pvalue]['selfDeaf'] == 1 ? "<img src='" . GQPIMG . "mumble/player_selfdeaf.png' alt='selfdeaf'/>" : "");
                     echo ($players[$pvalue]['userid'] != -1 ? "<img src='" . GQPIMG . "mumble/player_auth.png' alt='suppressed'/>" : "");
                     echo "</li>";
                 }

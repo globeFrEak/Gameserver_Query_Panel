@@ -25,7 +25,8 @@ function GameQ_Create($servers) {
     if ($servers != FALSE) {
         $gq = new GameQ();
         $gq->addServers($servers);
-        $gq->setOption('timeout', 5);
+        $gq->setOption('timeout', 10);
+        $gq->setOption('write_wait', 250);
         $gq->setFilter('normalise');
         return $gq->requestData();
     } else {
@@ -131,6 +132,7 @@ function GameQ_GetInfo($game, $return = 'N') {
     unset($class);
 }
 //unused
+/**
 function GameQ_ScanDir() {
     $result = array();
     $dir = scandir(GQPBASE . "templates");
@@ -141,6 +143,5 @@ function GameQ_ScanDir() {
         }
     }
     return $result;
-}
-
+}**/
 ?>

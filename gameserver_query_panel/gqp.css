@@ -165,7 +165,13 @@ ul.gqp_list li > div {
     width: 100%;
 }
 .gqpp-server img {
-    margin: 0.1em;
+    margin: .1em;
+}
+.gqpp-server h6{
+    margin: .2em;
+}
+.gqpp-server ul{
+    margin-bottom: .3em;
 }
 .gqpp-right {
     float: right;    
@@ -175,7 +181,7 @@ ul.gqp_list li > div {
     margin-right: 50%;
 }
 .gqpp-left div, .gqpp-right div {
-    margin: 0.1em 0;
+    margin: .1em 0;
 } 
 .gqpp-clear {
     clear: both;
