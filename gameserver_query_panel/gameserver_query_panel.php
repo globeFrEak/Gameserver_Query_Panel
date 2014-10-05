@@ -22,7 +22,7 @@ if (!defined("IN_FUSION")) {
 include INFUSIONS . "gameserver_query_panel/infusion_db.php";
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
-add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
 
 add_to_head("<script type=\"text/javascript\">
     function gqp_ajax_panel() {
@@ -65,10 +65,10 @@ while ($data = dbarray($result)) {
     $title = $data['panel_name'];
 }
 
-openside("<span class='gqp-gamepad'></span> " . $title, true, "on");
+openside("<span class='gqpfa-gamepad'></span> " . $title, true, "on");
 echo "<div id='gqp_ajax_panel'></div>";
 echo "<hr />";
-echo "<span id='gqp_ajaxrel' class='gqp-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span>";
+echo "<span id='gqp_ajaxrel' class='gqpfa-rotate-left' alt='" . $locale['gqp_reload'] . "' title='" . $locale['gqp_reload'] . "'></span>";
 if (checkrights("GQPG")) {
     echo "<a href='" . GQPBASE . "gameserver_query_admin.php" . $aidlink . "'>Admin</a>";
 }

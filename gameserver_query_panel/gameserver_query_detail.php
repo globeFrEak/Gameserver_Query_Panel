@@ -22,12 +22,13 @@ require_once THEMES . "templates/header.php";
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
+
 if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
     include GQPBASE . "locale/" . $settings['locale'] . ".php";
 } else {
     include GQPBASE . "locale/English.php";
 }
-add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
 
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = mysql_real_escape_string($_GET['id']);
@@ -70,7 +71,7 @@ while ($data = dbarray($result)) {
     $title = $data['panel_name'];
 }
 
-opentable("<span class='gqp-gamepad'></span> " . $title);
+opentable("<span class='gqpfa-gamepad'></span> " . $title);
 //echo "<button id='gqp_ajrel_detail'>click</button>";
 echo "<div id='gqp_ajax_detail'></div>";
 closetable();
