@@ -24,22 +24,22 @@ function sortByChannel($a, $b) {
 //panel
 function PanelOut($data, $id) {
     if ($data['gq_type'] != 'mumble') {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqpfa-sign-in'></span></a>" : "");
-        $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         echo "<div class='gqpp-server'>";
         echo "<h5>$password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-        echo "<span><span class='gqpfa-globe'></span> " . $data['gq_mapname'] . "</span>";
-        echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span>";
+        echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
+        echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span>";
         echo "</div>";
         echo "<div class='gqpp-clear'></div>";
     } else {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqpfa-sign-in'></span></a>" : "");
-        $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         $numplayers = (empty($data['gq_numplayers'])? 0 : $data['gq_numplayers']);
         echo "<div class='gqpp-server'>";
         echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
-        echo "<span style='float:right'>" . $numplayers . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span>";
+        echo "<span style='float:right'>" . $numplayers . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span>";
 
         if ($numplayers > 0) {
             $players = $data['players'];
@@ -80,19 +80,19 @@ function PanelOut($data, $id) {
 //detail
 function DetailOut($data) {
     if ($data['gq_type'] != 'mumble') {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqpfa-sign-in'></span></a>" : "");
-        $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         echo "<div class='gqpp-server'>";
         echo "<h5>$password" . $data['gq_hostname'] . "$join</h5>";
         echo "<div><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
-        echo "<span><span class='gqpfa-globe'></span> " . $data['gq_mapname'] . "</span>";
-        echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span></div>";
+        echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
+        echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
         echo "<div><h5>IP: " . $data['gq_address'] . ":" . $data['gq_port'] . "</h5>";
         if ($data['gq_numplayers'] > 0) {
-            echo "<ul class='gqpfa-ul'>";
+            echo "<ul class='gqp-ul'>";
             for ($count = 0; $count < $data['gq_numplayers']; $count++) {
                 $playtime = date("H:i:s", $data['players'][$count]['time'] + strtotime("1970/1/1"));
-                echo "<li class='gqpfa-li gqpfa-user'>" . $data['players'][$count]['gq_name'] . " [Spielzeit: $playtime]</li>";
+                echo "<li><span class='gqp-user'></span>" . $data['players'][$count]['gq_name'] . " [Spielzeit: $playtime]</li>";
             }
             echo "</ul>";
         }
@@ -105,13 +105,13 @@ function DetailOut($data) {
         echo "</div>";
         echo "<div class='gqpp-clear'></div>";
     } else {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqpfa-sign-in'></span></a>" : "");
-        $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         $numplayers = (empty($data['gq_numplayers'])? 0 : $data['gq_numplayers']);
         echo "<div class='gqpp-server'>";
         echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password" . $data['gq_hostname'] . "$join</h5>";
         echo "<div>";
-        echo "<span style='float:right'>" . $numplayers . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span></div>";
+        echo "<span style='float:right'>" . $numplayers . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
         echo "<div>";
 
         if ($numplayers > 0) {
