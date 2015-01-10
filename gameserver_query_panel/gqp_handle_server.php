@@ -31,7 +31,7 @@ if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
 } else {
     include GQPBASE . "locale/English.php";
 }
-add_to_head("<link rel='stylesheet' href='" . GQPBASE . "gqp.css' type='text/css'/>");
+add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
 add_to_head("<script>
 $(document).ready(function() {     
     //set default game port on placeholder tag    

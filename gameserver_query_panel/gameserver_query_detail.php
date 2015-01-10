@@ -71,7 +71,7 @@ while ($data = dbarray($result)) {
     $title = $data['panel_name'];
 }
 
-opentable("<span class='gqpfa-gamepad'></span> " . $title);
+opentable("<span class='gqp-gamepad'></span> " . $title);
 //echo "<button id='gqp_ajrel_detail'>click</button>";
 echo "<div id='gqp_ajax_detail'></div>";
 closetable();

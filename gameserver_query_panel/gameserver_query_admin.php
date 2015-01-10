@@ -83,7 +83,7 @@ if (dbrows($result) != 0) {
     while ($data = dbarray($result)) {
         $row_color = ($k % 2 == 0 ? "tbl1" : "tbl2");
         echo "<li id='listItem_" . $data['id'] . "' class='" . $row_color . ($data['active'] == 0 ? " pdisabled" : "") . "'>\n";
-        echo "<div><span class='gqpfa-arrows-alt handle'></span></div>\n";
+        echo "<div><span class='gqp-arrows-alt handle'></span></div>\n";
         echo "<div>" . $data['name'] . "</div>\n";
         echo "<div><img src='" . GQPIMG . "games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
         echo "<div>" . $data['address'] . ":" . $data['port'] . "</div>\n";
@@ -103,18 +103,18 @@ if (dbrows($result) != 0) {
         echo "<input type='hidden' name='port' value='" . $data['port'] . "'>";
         echo "<input type='hidden' name='server_order' value='" . $data['server_order'] . "'>";
         echo "<input type='hidden' name='active' value='" . $data['active'] . "'>";
-        echo "<button type='submit'><span class='gqpfa-gear' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
+        echo "<button type='submit'><span class='gqp-gear' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div>";
         echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_srvfields.php" . $aidlink . "&id=" . $data['id'] . "'>";
-        echo "<button type='submit'><span class='gqpfa-gamepad' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
+        echo "<button type='submit'><span class='gqp-gamepad' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div>";
         echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "&server=del'>";
         echo "<input type='hidden' name='id' value='" . $data['id'] . "'>";
-        echo "<button type='submit'><span class='gqpfa-trash-o' title='" . $locale['gqp_admin_del'] . "'></span></button>";
+        echo "<button type='submit'><span class='gqp-trash-o' title='" . $locale['gqp_admin_del'] . "'></span></button>";
         echo "</form>";
         echo "</div>";
         echo "<div style='clear:both;'></div>\n";
@@ -144,7 +144,7 @@ if (dbrows($result) != 0) {
           }
           echo "</select>";
          * */
-        echo "<button type='submit'><span class='gqpfa-check' title='" . $locale['gqp_admin_edit'] . "' > </span></button>";
+        echo "<button type='submit'><span class='gqp-check' title='" . $locale['gqp_admin_edit'] . "' > </span></button>";
         echo "</form>";
         echo "</div>";
         closetable();
@@ -152,7 +152,7 @@ if (dbrows($result) != 0) {
 }
 
 //List all supported games
-opentable("Game list - " . GameQ_Games('', 'count') . " games supported <span id = 'gqp_gl_btn' class = 'gqpfa-chevron-down'></span>");
+opentable("Game list - " . GameQ_Games('', 'count') . " games supported <span id = 'gqp_gl_btn' class = 'gqp-chevron-down'></span>");
 echo "<div id = 'gqp_gamelist' style = 'display:none;'>";
 echo GameQ_Games();
 echo "</div>";

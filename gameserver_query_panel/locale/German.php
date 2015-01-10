@@ -2,7 +2,7 @@
 $locale['gqp_title'] = "Gameserver Query Panel";
 $locale['gqp_desc'] = "Gamerserver Status auslesen und in einem Panel anzeigen lassen.";
 $locale['gqp_admin'] = "Gameserver Query Panel";
-$locale['gqp_version'] = "1.0";
+$locale['gqp_version'] = "1.1";
 $locale['gqp_reload'] = "aktualisieren";
 $locale['gqp_order_update'] = "Die Sortierung der Server wurde aktualisiert.";
 $locale['gqp_admin_001'] = "Eingetragene Server";
