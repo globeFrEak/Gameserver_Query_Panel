@@ -54,12 +54,6 @@ add_to_head("<script type=\"text/javascript\">
     });
 </script>");
 
-if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
-    include GQPBASE . "locale/" . $settings['locale'] . ".php";
-} else {
-    include GQPBASE . "locale/English.php";
-}
-
 $result = dbquery("SELECT panel_name FROM " . DB_GQP_SETTINGS . "");
 while ($data = dbarray($result)) {
     $title = $data['panel_name'];

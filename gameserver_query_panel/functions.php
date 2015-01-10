@@ -21,12 +21,18 @@ require_once INFUSIONS . "gameserver_query_panel/GameQ/GameQ.php";
 define("GQPBASE", BASEDIR."infusions/gameserver_query_panel/");
 define("GQPIMG", GQPBASE."images/");
 
+if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
+    include_once GQPBASE . "locale/" . $settings['locale'] . ".php";
+} else {
+    include_once GQPBASE . "locale/English.php";
+}
+
 function GameQ_Create($servers) {
     if ($servers != FALSE) {
         $gq = new GameQ();
         $gq->addServers($servers);
-        $gq->setOption('timeout', 10);
-        $gq->setOption('write_wait', 250);
+        $gq->setOption('timeout', 10);        
+        $gq->setOption('write_wait', 500);
         $gq->setFilter('normalise');
         return $gq->requestData();
     } else {

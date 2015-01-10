@@ -184,6 +184,9 @@ ul.gqp_list li > div {
 .gqpmumblelist li {
     list-style-image: url(../images/mumble/list_player.png);    
 }
+.gqpgamelist li {
+    list-style: none;   
+}
 /** PANEL **/
 .gqpp-server {
     width: 100%;

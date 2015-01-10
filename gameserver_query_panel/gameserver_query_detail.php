@@ -24,12 +24,6 @@ include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
 add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
 
-if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
-    include GQPBASE . "locale/" . $settings['locale'] . ".php";
-} else {
-    include GQPBASE . "locale/English.php";
-}
-
 if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = mysql_real_escape_string($_GET['id']);
 } else {

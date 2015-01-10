@@ -26,12 +26,6 @@ include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 include_once INFUSIONS . "gameserver_query_panel/functions.php";
 
 add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
-
-if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
-    include GQPBASE . "locale/" . $settings['locale'] . ".php";
-} else {
-    include GQPBASE . "locale/English.php";
-}
 add_to_head("<script type='text/javascript' src='" . INCLUDES . "jquery/jquery-ui.js'></script>");
 add_to_head("<script>
 $(document).ready(function() {

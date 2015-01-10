@@ -23,4 +23,6 @@ $locale['gqp_admin_del'] = "L&ouml;schen";
 $locale['gqp_admin_act'] = "Sichtbarkeit aktivieren";
 $locale['gqp_admin_deact'] = "Sichtbarkeit deaktivieren";
 $locale['gqp_admin_noresp'] = "<p>Der Server antwortet nicht!</p>";
+//template
+$locale['gqp_temp_001'] = "Verbinden mit ";
 ?>

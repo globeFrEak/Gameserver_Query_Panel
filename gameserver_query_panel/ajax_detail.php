@@ -34,9 +34,11 @@ $servers = GameQ_Create(GameQ_Servers($_GET['id']));
 if ($servers != FALSE) {
     foreach ($servers as $id => $data) {
         if (!$data['gq_online']) {
-            echo $locale['gqp_admin_noresp'];
+            echo "<div>";
+            echo "<h5><span class='gqp-frown-o'></span> " . $data['gq_address'] . ":" . $data['gq_port'] . " no response!</h5>";
+            echo "</div>\n";
         } else {
-            DetailOut($data);
+            DetailOut($data, $locale);
         }
     }
 }

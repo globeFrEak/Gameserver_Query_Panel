@@ -16,25 +16,28 @@
   | copyright header is strictly prohibited without
   | written permission from the original author(s).
   +-------------------------------------------------------- */
-
 function sortByChannel($a, $b) {
     return $a['channel'] - $b['channel'];
 }
-
 //panel
-function PanelOut($data, $id) {
+function PanelOut($data, $id, $locale) {
     if ($data['gq_type'] != 'mumble') {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "' title='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         echo "<div class='gqpp-server'>";
         echo "<h5>$password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
         echo "<span><span class='gqp-globe'></span> " . $data['gq_mapname'] . "</span>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span>";
+        if (iSUPERADMIN) {
+            echo "<pre>";
+            echo print_r($data);
+            echo "</pre>";
+        }
         echo "</div>";
         echo "<div class='gqpp-clear'></div>";
     } else {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "' title='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         $numplayers = (empty($data['gq_numplayers'])? 0 : $data['gq_numplayers']);
         echo "<div class='gqpp-server'>";
@@ -71,16 +74,16 @@ function PanelOut($data, $id) {
                 }
                 echo "</ul>";
             }
-        }
+        }        
         echo "</div>";
         echo "<div class='gqpp-clear'></div>";
-    }
+    }    
 }
 
 //detail
-function DetailOut($data) {
+function DetailOut($data, $locale) {
     if ($data['gq_type'] != 'mumble') {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "' title='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         echo "<div class='gqpp-server'>";
         echo "<h5>$password" . $data['gq_hostname'] . "$join</h5>";
@@ -89,10 +92,14 @@ function DetailOut($data) {
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqp-group'></span></span></div>";
         echo "<div><h5>IP: " . $data['gq_address'] . ":" . $data['gq_port'] . "</h5>";
         if ($data['gq_numplayers'] > 0) {
-            echo "<ul class='gqp-ul'>";
+            echo "<ul class='gqpgamelist'>";
             for ($count = 0; $count < $data['gq_numplayers']; $count++) {
                 $playtime = date("H:i:s", $data['players'][$count]['time'] + strtotime("1970/1/1"));
-                echo "<li><span class='gqp-user'></span>" . $data['players'][$count]['gq_name'] . " [Spielzeit: $playtime]</li>";
+                echo "<li>";
+                echo "<span class='gqp-user'></span>";
+                echo ($data['gq_protocol'] == 'source' ? "<a href='http://steamcommunity.com/search/?text=".$data['players'][$count]['gq_name']."' title='Spieler bei Steam suchen'>".$data['players'][$count]['gq_name']."</a>" : $data['players'][$count]['gq_name']);
+                echo " [Spielzeit: $playtime]";
+                echo "</li>";
             }
             echo "</ul>";
         }
@@ -105,7 +112,7 @@ function DetailOut($data) {
         echo "</div>";
         echo "<div class='gqpp-clear'></div>";
     } else {
-        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='Verbinden mit " . $data['gq_hostname'] . "' title='Verbinden mit " . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
+        $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "' title='". $locale['gqp_temp_001'] . $data['gq_hostname'] . "'><span class='gqp-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqp-lock'></span> " : "");
         $numplayers = (empty($data['gq_numplayers'])? 0 : $data['gq_numplayers']);
         echo "<div class='gqpp-server'>";
