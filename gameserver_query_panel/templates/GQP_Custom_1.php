@@ -21,6 +21,29 @@ function sortByChannel($a, $b) {
     return $a['channel'] - $b['channel'];
 }
 
+function outputOS($os, $osversion, $locale) {    
+    switch ($os) {
+        case "Win":
+            echo "<span class='gqpfa-windows' title='" . $locale['gqp_temp_005'] . $osversion . "'></span>";
+            break;
+        case "WinX64":
+            echo "<span class='gqpfa-windows' title='" . $osversion . "'></span>";
+            break;
+        case "Osx":
+            echo "<span class='gqpfa-apple' title='" . $locale['gqp_temp_006'] . $osversion . "'></span>";
+            break;
+        case "X11":
+            echo "<span class='gqpfa-linux' title='" . $locale['gqp_temp_007'] . $players[$pvalue]['osversion'] . "'></span>";
+            break;
+        case "Android":
+            echo "<span class='gqpfa-android' title='" . $locale['gqp_temp_008'] . $osversion . "'></span>";
+            break;
+        default:
+            return false;
+            break;
+    }
+}
+
 //panel
 function PanelOut($data, $id, $locale) {
     if ($data['gq_type'] != 'mumble') {
@@ -79,22 +102,7 @@ function PanelOut($data, $id, $locale) {
                     if (iMEMBER) {
                         echo "<span class='gqpfa-clock-o' title='" . $locale['gqp_temp_002'] . date("H:i:s", $players[$pvalue]['onlinesecs'] + strtotime("1970/1/1")) . $locale['gqp_temp_003'] . date("H:i:s", $players[$pvalue]['idlesecs'] + strtotime("1970/1/1")) . "'></span>";
                         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' title='" . $locale['gqp_temp_004'] . $players[$pvalue]['release'] . "' height='16' width='16'/>";
-                        switch ($players[$pvalue]['os']) {
-                            case "Win":
-                                echo "<span class='gqpfa-windows' title='" . $locale['gqp_temp_005'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            case "Osx":
-                                echo "<span class='gqpfa-apple' title='" . $locale['gqp_temp_006'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            case "X11":
-                                echo "<span class='gqpfa-linux' title='" . $locale['gqp_temp_007'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            case "Android":
-                                echo "<span class='gqpfa-android' title='" . $locale['gqp_temp_008'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            default:
-                                break;
-                        }
+                        outputOS ($players[$pvalue]['os'], $players[$pvalue]['osversion'], $locale);
                     }
                     echo "</li>";
                 }
@@ -177,22 +185,7 @@ function DetailOut($data, $locale) {
                     if (iMEMBER) {
                         echo "<span class='gqpfa-clock-o' title='" . $locale['gqp_temp_002'] . date("H:i:s", $players[$pvalue]['onlinesecs'] + strtotime("1970/1/1")) . $locale['gqp_temp_003'] . date("H:i:s", $players[$pvalue]['idlesecs'] + strtotime("1970/1/1")) . "'></span>";
                         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' title='" . $locale['gqp_temp_004'] . $players[$pvalue]['release'] . "' height='16' width='16'/>";
-                        switch ($players[$pvalue]['os']) {
-                            case "Win":
-                                echo "<span class='gqpfa-windows' title='" . $locale['gqp_temp_005'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            case "Osx":
-                                echo "<span class='gqpfa-apple' title='" . $locale['gqp_temp_006'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            case "X11":
-                                echo "<span class='gqpfa-linux' title='" . $locale['gqp_temp_007'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            case "Android":
-                                echo "<span class='gqpfa-android' title='" . $locale['gqp_temp_008'] . $players[$pvalue]['osversion'] . "'></span>";
-                                break;
-                            default:
-                                break;
-                        }
+                        outputOS ($players[$pvalue]['os'], $players[$pvalue]['osversion'], $locale);
                     }
                     echo "</li>";
                 }
