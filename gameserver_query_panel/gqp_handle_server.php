@@ -24,7 +24,7 @@ include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 if (!checkrights("GQPG") || !defined("iAUTH") || !isset($_GET['aid']) || $_GET['aid'] != iAUTH) {
     redirect("../../index.php");
 }
-include_once INFUSIONS . "gameserver_query_panel/functions.php";
+include_once INFUSIONS . "gameserver_query_panel/includes/functions.php";
 
 if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
     include GQPBASE . "locale/" . $settings['locale'] . ".php";
@@ -33,19 +33,23 @@ if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
 }
 add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
 add_to_head("<script>
-$(document).ready(function() {     
-    //set default game port on placeholder tag    
-    $(\"select[name='game']\").change(function() {
-    var gametype = $(this).val();
+$(document).ready(function() { 
+    $.fn.placeholder = function (options) {
+    var gametype = $(options).val();
     $.ajax({
-    url:'" . GQPBASE . "ajax_admin.php',
+    url:'" . GQPBASE . "includes/ajax_admin.php',
         data: {game: gametype},            
         type: 'post',
         success: function(data) { 
         $(\"input[name='port']\").attr('placeholder', data);               
             }            
-        });                
-    });
+        }); 
+    };
+    //set default game port on placeholder tag 
+    $.fn.placeholder(\"select[name='game']\");    
+    $(\"select[name='game']\").change(function() {
+    $.fn.placeholder(this);                    
+    });    
     //form reset
     $('#gqpreset','#gqpserver').not(':button, :submit, :reset, :hidden').val('').removeAttr('checked');
     
@@ -57,15 +61,15 @@ $(document).ready(function() {
         var regexPORT = /^([0-9]{4}|[0-9]{5})$/;
         if (regexHOST.test($('#gqp_address').val())) {
             var gqp_address = 1;
-            $('#gqp_address').before('<span class=\"gqp-check gqp_success\"></span>');
+            $('#gqp_address').before('<span class=\"gqpfa-check gqp_success\"></span>');
         } else {
-            $('#gqp_address').before('<span class=\"gqp-times gqp_error\"></span>');
+            $('#gqp_address').before('<span class=\"gqpfa-times gqp_error\"></span>');
         }
         if (regexPORT.test($('#gqp_port').val())) {
             var gqp_port = 1;
-            $('#gqp_port').before('<span class=\"gqp-check gqp_success\"></span>');
+            $('#gqp_port').before('<span class=\"gqpfa-check gqp_success\"></span>');
         } else {
-            $('#gqp_port').before('<span class=\"gqp-times gqp_error\"></span>');
+            $('#gqp_port').before('<span class=\"gqpfa-times gqp_error\"></span>');
         }
         if (gqp_address && gqp_port) {
             $('#gqpserver').submit();
@@ -73,10 +77,10 @@ $(document).ready(function() {
         
     });
     $('#gqp_gl_btn').click(function() {        
-        if ( $(this).closest('label').find('span').hasClass('gqp-chevron-down') ) {
-            $(this).closest('label').find('span').removeClass('gqp-chevron-down').addClass('gqp-chevron-up');            
+        if ( $(this).closest('label').find('span').hasClass('gqpfa-chevron-down') ) {
+            $(this).closest('label').find('span').removeClass('gqpfa-chevron-down').addClass('gqpfa-chevron-up');            
         } else {
-            $(this).closest('label').find('span').removeClass('gqp-chevron-up').addClass('gqp-chevron-down');            
+            $(this).closest('label').find('span').removeClass('gqpfa-chevron-up').addClass('gqpfa-chevron-down');            
         }                
         $('#gqp_gamelist').slideToggle('slow', function() {        
         });
@@ -88,7 +92,7 @@ $(document).ready(function() {
 $id = (isset($_POST['id']) && is_numeric($_POST['id']) ? mysql_real_escape_string($_POST['id']) : "");
 $address = (isset($_POST['address']) ? mysql_real_escape_string($_POST['address']) : "");
 $port = (isset($_POST['port']) && is_numeric($_POST['port']) ? mysql_real_escape_string($_POST['port']) : "");
-$game = (isset($_POST['game']) ? mysql_real_escape_string($_POST['game']) : "");
+$game = (isset($_POST['game']) || isset($_GET['game']) ? ($_POST['game'] ? mysql_real_escape_string($_POST['game']) : mysql_real_escape_string($_GET['game'])) : "");
 $name = (isset($_POST['name']) && strlen($_POST['name']) > 0 ? mysql_real_escape_string($_POST['name']) : $address . "(" . $game . ")");
 $server_order = (isset($_POST['server_order']) && is_numeric($_POST['server_order']) ? mysql_real_escape_string($_POST['server_order']) : "");
 $active = (isset($_POST['active']) && is_numeric($_POST['active']) ? mysql_real_escape_string($_POST['active']) : "");
@@ -122,7 +126,7 @@ if (isset($_GET['server']) && $_GET['server'] == "add") {
         $i == 0;
         foreach ($server_opt as $key => $value) {
             $i++;
-            $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, side, icon, field, field_order) VALUES ('', '$last_id', '0', '1', '', '$value', '$i')");
+            $result = dbquery("INSERT INTO " . DB_GQP_SERVER_OPT . " (id, server_id, panel, side, icon, field, var_order) VALUES ('', '$last_id', '0', '1', '', '$value', '$i')");
         }
         redirect("gameserver_query_admin.php" . $aidlink);
     }
@@ -145,8 +149,7 @@ if (isset($_GET['settings']) && $_GET['settings'] == "edit") {
 }
 
 /* * Server hinzufuegen/editieren * */
-$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button><span class='gqp-times' title='" . $locale['gqp_admin_005'] . "'></span></button></a>";
-opentable((isset($_GET['server']) && $_GET['server'] == "edit" ? $locale['gqp_admin_006'] . $exit : $locale['gqp_admin_002']));
+opentable((isset($_GET['server']) && $_GET['server'] == "edit" ? $locale['gqp_admin_006'] : $locale['gqp_admin_002']));
 echo "<div id='gqp_server_form'>";
 echo "<form id='gqpserver' name='addserver' method='post' action='" . FUSION_SELF . $aidlink . "&server=add'>";
 if (isset($_GET['server']) && $_GET['server'] == "edit") {
@@ -174,35 +177,6 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
         echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' />\n";
     }
     echo "</br>";
-    /**
-      $servers = GameQ_Create(GameQ_Servers($id));
-      if ($servers != FALSE) {
-      $result = dbquery("SELECT field, panel FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='$id'");
-      $saved_fields_panel = array();
-      $saved_fields_detail = array();
-      if (dbrows($result) != 0) {
-      for ($i = 0; $data = dbarray($result); $i++) {
-      if ($data['panel'] == 0) {
-      $saved_fields_panel[$i] = $data['field'];
-      } else {
-      $saved_fields_detail[$i] = $data['field'];
-      }
-      }
-      }
-      foreach ($servers as $id => $data) {
-      if ($data['gq_online']) {
-      echo "<label id='gqp_gl_btn'>" . $locale['gqp_admin_003'] . "<span class='gqp-chevron-down'></span></label>";
-      echo "<div id='gqp_gamelist' style='display:none;'>";
-      echo "<label>Panel + Detail Anzeige</label><br>\n";
-      foreach ($data as $key => $value) {
-      echo "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_panel[]' value='$key' " . (in_array($key, $saved_fields_panel) ? "checked" : "") . " />"
-      . "<input class='gqp_checkbox' type='checkbox' name='gqp_fields_detail[]' value='$key' " . (in_array($key, $saved_fields_detail) ? "checked" : "") . " /><b>$key</b> - ($value)<br>";
-      }
-      echo "</div><br>";
-      }
-      }
-      }
-     * */
 } else {
     echo "<label>" . $locale['gqp_admin_007'] . "</label>\n";
     echo "<input name='name' type='text' size='20' maxlength='50' placeholder='" . $locale['gqp_admin_007a'] . "' /><br>\n";
@@ -217,11 +191,18 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<label>" . $locale['gqp_admin_011'] . "</label>\n";
     echo "<input class='gqp_checkbox' type='checkbox' name='active' value='1' checked /><br>\n";
 }
-echo "<button type='button' id='gqpsubmit'><span class='gqp-check' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
-echo "<button type='reset' id='gqpreset'><span class='gqp-rotate-left' title='" . $locale['gqp_admin_005'] . "'></span></button>";
+//submit
+echo "<button type='button' id='gqpsubmit'><span class='gqpfa-check' title='" . $locale['gqp_admin_edit'] . "'></span></button>";
+//reset
+$exit = "<a href='" . FUSION_SELF . $aidlink . "'><button type='button'><span class='gqpfa-times' title='" . $locale['gqp_admin_005'] . "'></span></button></a>";
+echo (isset($_GET['server']) && $_GET['server'] == "edit" ? $exit : "<button type='reset' id='gqpreset'><span class='gqpfa-times' title='" . $locale['gqp_admin_005'] . "'></span></button>");
+//back
+echo "<a href='" . GQPBASE . "gameserver_query_admin.php" . $aidlink . "' title='" . $locale['gqp_admin_back'] . "'>"
+ . "<button type='button'>"
+ . "<span class='gqpfa-mail-reply' title='" . $locale['gqp_admin_back'] . "'></span>"
+ . "</button></a>";
 echo "</form>\n";
 echo "</div>";
-echo "<a class='gqp_a' href='" . GQPBASE . "gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";
 closetable();
 require_once(THEMES . "templates/footer.php");
 ?>

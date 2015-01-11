@@ -2,7 +2,7 @@
 $locale['gqp_title'] = "Gameserver Query Panel";
 $locale['gqp_desc'] = "Gamerserver Status auslesen und in einem Panel anzeigen lassen.";
 $locale['gqp_admin'] = "Gameserver Query Panel";
-$locale['gqp_version'] = "1.1";
+$locale['gqp_version'] = "1.2";
 $locale['gqp_reload'] = "aktualisieren";
 $locale['gqp_order_update'] = "Die Sortierung der Server wurde aktualisiert.";
 $locale['gqp_admin_001'] = "Eingetragene Server";
@@ -23,6 +23,22 @@ $locale['gqp_admin_del'] = "L&ouml;schen";
 $locale['gqp_admin_act'] = "Sichtbarkeit aktivieren";
 $locale['gqp_admin_deact'] = "Sichtbarkeit deaktivieren";
 $locale['gqp_admin_noresp'] = "<p>Der Server antwortet nicht!</p>";
+$locale['gqp_admin_link'] = "Admin";
+$locale['gqp_admin_settings'] = "Einstellungen";
+$locale['gqp_admin_panelname'] = "Panel Name:";
+$locale['gqp_admin_paneltemp'] = "Panel Template:";
+$locale['gqp_admin_back'] = "zurück!";
+$locale['gqp_server_noresponse'] = " nicht erreicht!";
+$locale['gqp_admin_gamesupport1'] = "Spiele Liste - ";
+$locale['gqp_admin_gamesupport2'] = " unterstützte Spiele/Server";
 //template
 $locale['gqp_temp_001'] = "Verbinden mit ";
+$locale['gqp_temp_002'] = "Online seit: ";
+$locale['gqp_temp_003'] = ", davon AFK: ";
+$locale['gqp_temp_004'] = "Mumble version: ";
+$locale['gqp_temp_005'] = "Windows: ";
+$locale['gqp_temp_006'] = ""; //apple
+$locale['gqp_temp_007'] = ""; //linux
+$locale['gqp_temp_008'] = ""; //android
+$locale['gqp_temp_020'] = "Spieler bei Steam suchen";
 ?>

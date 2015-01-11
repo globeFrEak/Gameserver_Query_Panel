@@ -24,7 +24,7 @@ include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
 if (!checkrights("GQPG") || !defined("iAUTH") || !isset($_GET['aid']) || $_GET['aid'] != iAUTH) {
     redirect("../../index.php");
 }
-include_once INFUSIONS . "gameserver_query_panel/functions.php";
+include_once INFUSIONS . "gameserver_query_panel/includes/functions.php";
 
 if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
     include GQPBASE . "locale/" . $settings['locale'] . ".php";
@@ -89,7 +89,7 @@ if (dbrows($result) != 0) {
         }
     }
     echo "</div>";
-    echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "'>zurück!</a>";
+    echo "<a class='gqp_a' href='" . INFUSIONS . "gameserver_query_panel/gameserver_query_admin.php" . $aidlink . "' title='" . $locale['gqp_admin_back'] . "'>" . $locale['gqp_admin_back'] . "</a>";
     closetable();
 } else {
     redirect("gameserver_query_admin.php" . $aidlink);

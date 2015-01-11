@@ -20,7 +20,7 @@ require_once "../../maincore.php";
 require_once THEMES . "templates/header.php";
 
 include_once INFUSIONS . "gameserver_query_panel/infusion_db.php";
-include_once INFUSIONS . "gameserver_query_panel/functions.php";
+include_once INFUSIONS . "gameserver_query_panel/includes/functions.php";
 
 add_to_head("<link rel='stylesheet' href='" . GQPBASE . "css/gqp.css' type='text/css'/>");
 
@@ -33,7 +33,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
 add_to_head("<script type=\"text/javascript\">    
     function gqp_ajax_detail() {
         $.ajax({
-            url:'" . GQPBASE . "ajax_detail.php?id=" . $id . "',            
+            url:'" . GQPBASE . "includes/ajax_detail.php?id=" . $id . "',            
             beforeSend:function(){
                 $('#gqp_ajax_detail').fadeOut('slow');
             },
@@ -45,7 +45,7 @@ add_to_head("<script type=\"text/javascript\">
     }
     function gqp_ajax_detail_reload() {
         $.ajax({
-            url:'" . GQPBASE . "ajax_detail.php?id=" . $id . "',            
+            url:'" . GQPBASE . "includes/ajax_detail.php?id=" . $id . "',            
             success:function(data){
                 $('#gqp_ajax_detail').html(data);
             },
@@ -65,7 +65,7 @@ while ($data = dbarray($result)) {
     $title = $data['panel_name'];
 }
 
-opentable("<span class='gqp-gamepad'></span> " . $title);
+opentable("<span class='gqpfa-gamepad'></span> " . $title);
 //echo "<button id='gqp_ajrel_detail'>click</button>";
 echo "<div id='gqp_ajax_detail'></div>";
 closetable();

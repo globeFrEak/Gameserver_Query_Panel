@@ -2,7 +2,7 @@
 $locale['gqp_title'] = "Gameserver Query Panel";
 $locale['gqp_desc'] = "Read gameserver status and display in a panel.";
 $locale['gqp_admin'] = "Gameserver Query Panel";
-$locale['gqp_version'] = "1.1";
+$locale['gqp_version'] = "1.2";
 $locale['gqp_reload'] = "reload";
 $locale['gqp_order_update'] = "server order updated.";
 $locale['gqp_admin_001'] = "registered server";
@@ -23,4 +23,22 @@ $locale['gqp_admin_del'] = "delete";
 $locale['gqp_admin_act'] = "activate";
 $locale['gqp_admin_deact'] = "deactivate";
 $locale['gqp_admin_noresp'] = "<p>The server did not respond</p>";
+$locale['gqp_admin_link'] = "admin";
+$locale['gqp_admin_settings'] = "settings";
+$locale['gqp_admin_panelname'] = "panel name:";
+$locale['gqp_admin_paneltemp'] = "panel template:";
+$locale['gqp_admin_back'] = "back!";
+$locale['gqp_server_noresponse'] = " no response!";
+$locale['gqp_admin_gamesupport1'] = "Games list - ";
+$locale['gqp_admin_gamesupport2'] = " supported games/servers ";
+//template
+$locale['gqp_temp_001'] = "connect to ";
+$locale['gqp_temp_002'] = "online since ";
+$locale['gqp_temp_003'] = ", afk time ";
+$locale['gqp_temp_004'] = "mumble version: ";
+$locale['gqp_temp_005'] = "windows: ";
+$locale['gqp_temp_006'] = ""; //apple
+$locale['gqp_temp_007'] = ""; //linux
+$locale['gqp_temp_008'] = ""; //android
+$locale['gqp_temp_020'] = "found player on steam";
 ?>
