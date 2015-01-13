@@ -36,9 +36,9 @@ $locale['gqp_temp_001'] = "connect to ";
 $locale['gqp_temp_002'] = "online since ";
 $locale['gqp_temp_003'] = ", afk time ";
 $locale['gqp_temp_004'] = "mumble version: ";
-$locale['gqp_temp_005'] = "windows: ";
+$locale['gqp_temp_005'] = "Windows: ";
 $locale['gqp_temp_006'] = ""; //apple
-$locale['gqp_temp_007'] = ""; //linux
-$locale['gqp_temp_008'] = ""; //android
+$locale['gqp_temp_007'] = "Linux: "; //linux
+$locale['gqp_temp_008'] = "Android: "; //android
 $locale['gqp_temp_020'] = "found player on steam";
 ?>

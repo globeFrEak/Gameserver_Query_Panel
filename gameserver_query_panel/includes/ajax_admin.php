@@ -21,5 +21,5 @@ if (!defined("IN_FUSION")) { die("Access Denied"); }
 include_once INFUSIONS . "gameserver_query_panel/includes/functions.php";
 
 $game = (isset($_POST['game']) ? mysql_real_escape_string($_POST['game']) : "");
-echo GameQ_Games($game, 'portinfo');
+echo gameQ_Games($game, 'portinfo');
 ?>

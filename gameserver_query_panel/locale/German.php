@@ -38,7 +38,7 @@ $locale['gqp_temp_003'] = ", davon AFK: ";
 $locale['gqp_temp_004'] = "Mumble version: ";
 $locale['gqp_temp_005'] = "Windows: ";
 $locale['gqp_temp_006'] = ""; //apple
-$locale['gqp_temp_007'] = ""; //linux
-$locale['gqp_temp_008'] = ""; //android
+$locale['gqp_temp_007'] = "Linux: "; //linux
+$locale['gqp_temp_008'] = "Android: "; //android
 $locale['gqp_temp_020'] = "Spieler bei Steam suchen";
 ?>

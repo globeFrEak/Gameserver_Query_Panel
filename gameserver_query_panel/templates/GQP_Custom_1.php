@@ -21,7 +21,7 @@ function sortByChannel($a, $b) {
     return $a['channel'] - $b['channel'];
 }
 
-function outputOS($os, $osversion, $locale) {    
+function mumbleOutputOS($os, $osversion, $locale) {    
     switch ($os) {
         case "Win":
             echo "<span class='gqpfa-windows' title='" . $locale['gqp_temp_005'] . $osversion . "'></span>";
@@ -33,7 +33,7 @@ function outputOS($os, $osversion, $locale) {
             echo "<span class='gqpfa-apple' title='" . $locale['gqp_temp_006'] . $osversion . "'></span>";
             break;
         case "X11":
-            echo "<span class='gqpfa-linux' title='" . $locale['gqp_temp_007'] . $players[$pvalue]['osversion'] . "'></span>";
+            echo "<span class='gqpfa-linux' title='" . $locale['gqp_temp_007'] . $osversion . "'></span>";
             break;
         case "Android":
             echo "<span class='gqpfa-android' title='" . $locale['gqp_temp_008'] . $osversion . "'></span>";
@@ -45,13 +45,13 @@ function outputOS($os, $osversion, $locale) {
 }
 
 //panel
-function PanelOut($data, $id, $locale) {
+function panelOut($data, $id, $locale) {
     if ($data['gq_type'] != 'mumble') {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='" . $locale['gqp_temp_001'] . $data['gq_hostname'] . "' title='" . $locale['gqp_temp_001'] . $data['gq_hostname'] . "'><span class='gqpfa-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
         echo "<div class='gqp-server'>";
         echo "<h5>$password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
-        echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
+        echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . gameQ_GetInfo($data['gq_type'], 'N') . "' title='" . gameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
         echo "<span><span class='gqpfa-globe'></span> " . $data['gq_mapname'] . "</span>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span>";
         /*
@@ -70,7 +70,7 @@ function PanelOut($data, $id, $locale) {
         $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
         $numplayers = (empty($data['gq_numplayers']) ? 0 : $data['gq_numplayers']);
         echo "<div class='gqp-server'>";
-        echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
+        echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . gameQ_GetInfo($data['gq_type'], 'N') . "' title='" . gameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password<a href='" . GQPBASE . "gameserver_query_detail.php?id=$id'>" . $data['gq_hostname'] . "</a>$join</h5>";
         echo "<span style='float:right'>" . $numplayers . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span>";
 
         if ($numplayers > 0) {
@@ -102,7 +102,7 @@ function PanelOut($data, $id, $locale) {
                     if (iMEMBER) {
                         echo "<span class='gqpfa-clock-o' title='" . $locale['gqp_temp_002'] . date("H:i:s", $players[$pvalue]['onlinesecs'] + strtotime("1970/1/1")) . $locale['gqp_temp_003'] . date("H:i:s", $players[$pvalue]['idlesecs'] + strtotime("1970/1/1")) . "'></span>";
                         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' title='" . $locale['gqp_temp_004'] . $players[$pvalue]['release'] . "' height='16' width='16'/>";
-                        outputOS ($players[$pvalue]['os'], $players[$pvalue]['osversion'], $locale);
+                        mumbleOutputOS ($players[$pvalue]['os'], $players[$pvalue]['osversion'], $locale);
                     }
                     echo "</li>";
                 }
@@ -115,13 +115,13 @@ function PanelOut($data, $id, $locale) {
 }
 
 //detail
-function DetailOut($data, $locale) {
+function detailOut($data, $locale) {
     if ($data['gq_type'] != 'mumble') {
         $join = ($data['gq_joinlink'] ? " <a href='" . $data['gq_joinlink'] . "' alt='" . $locale['gqp_temp_001'] . $data['gq_hostname'] . "' title='" . $locale['gqp_temp_001'] . $data['gq_hostname'] . "'><span class='gqpfa-sign-in'></span></a>" : "");
         $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
         echo "<div class='gqp-server'>";
         echo "<h5>$password" . $data['gq_hostname'] . "$join</h5>";
-        echo "<div><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
+        echo "<div><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . gameQ_GetInfo($data['gq_type'], 'N') . "' title='" . gameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> ";
         echo "<span><span class='gqpfa-globe'></span> " . $data['gq_mapname'] . "</span>";
         echo "<span style='float:right'>" . $data['gq_numplayers'] . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span></div>";
         echo "<div><h5>IP: " . $data['gq_address'] . ":" . $data['gq_port'] . "</h5>";
@@ -151,7 +151,7 @@ function DetailOut($data, $locale) {
         $password = ($data['gq_password'] == 1 ? "<span class='gqpfa-lock'></span> " : "");
         $numplayers = (empty($data['gq_numplayers']) ? 0 : $data['gq_numplayers']);
         echo "<div class='gqp-server'>";
-        echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . GameQ_GetInfo($data['gq_type'], 'N') . "' title='" . GameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password" . $data['gq_hostname'] . "$join</h5>";
+        echo "<h5><img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' alt='" . gameQ_GetInfo($data['gq_type'], 'N') . "' title='" . gameQ_GetInfo($data['gq_type'], 'N') . "' height='16' width='16'/> $password" . $data['gq_hostname'] . "$join</h5>";
         echo "<div>";
         echo "<span style='float:right'>" . $numplayers . "/" . $data['gq_maxplayers'] . " <span class='gqpfa-group'></span></span></div>";
         echo "<div>";
@@ -185,7 +185,7 @@ function DetailOut($data, $locale) {
                     if (iMEMBER) {
                         echo "<span class='gqpfa-clock-o' title='" . $locale['gqp_temp_002'] . date("H:i:s", $players[$pvalue]['onlinesecs'] + strtotime("1970/1/1")) . $locale['gqp_temp_003'] . date("H:i:s", $players[$pvalue]['idlesecs'] + strtotime("1970/1/1")) . "'></span>";
                         echo "<img src='" . GQPIMG . "games/" . $data['gq_type'] . ".jpg' title='" . $locale['gqp_temp_004'] . $players[$pvalue]['release'] . "' height='16' width='16'/>";
-                        outputOS ($players[$pvalue]['os'], $players[$pvalue]['osversion'], $locale);
+                        mumbleOutputOS ($players[$pvalue]['os'], $players[$pvalue]['osversion'], $locale);
                     }
                     echo "</li>";
                 }

@@ -161,7 +161,7 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
 
     echo "<label>" . $locale['gqp_admin_008'] . "</label>\n";
     echo "<select name='game' class='textbox' maxlength='30'>"
-    . GameQ_Games($game, 'dropdown')
+    . gameQ_Games($game, 'dropdown')
     . "</select>";
 
     echo "<label>" . $locale['gqp_admin_009'] . "</label>\n";
@@ -182,7 +182,7 @@ if (isset($_GET['server']) && $_GET['server'] == "edit") {
     echo "<input name='name' type='text' size='20' maxlength='50' placeholder='" . $locale['gqp_admin_007a'] . "' /><br>\n";
     echo "<label>" . $locale['gqp_admin_008'] . "</label>\n";
     echo "<select name='game' class='textbox' maxlength='30'>"
-    . GameQ_Games($game, 'dropdown')
+    . gameQ_Games($game, 'dropdown')
     . "</select><br>\n";
     echo "<label>" . $locale['gqp_admin_009'] . "</label>\n";
     echo "<input id='gqp_address' name='address' type='text' size='20' maxlength='50' placeholder='" . $locale['gqp_admin_009a'] . "' /><br>\n";

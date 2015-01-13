@@ -78,7 +78,7 @@ if (dbrows($result) != 0) {
         echo "<li id='listItem_" . $data['id'] . "' class='" . $row_color . ($data['active'] == 0 ? " pdisabled" : "") . "'>\n";
         echo "<div><span class='gqpfa-arrows-alt handle'></span></div>\n";
         echo "<div>" . $data['name'] . "</div>\n";
-        echo "<div><img src='" . GQPIMG . "games/" . $data['game'] . ".jpg' alt='" . GameQ_GetInfo($data['game'], 'N') . "' title='" . GameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
+        echo "<div><img src='" . GQPIMG . "games/" . $data['game'] . ".jpg' alt='" . gameQ_GetInfo($data['game'], 'N') . "' title='" . gameQ_GetInfo($data['game'], 'N') . "' height='32' width='32'/></div>\n";
         echo "<div>" . $data['address'] . ":" . $data['port'] . "</div>\n";
         echo "<div>";
         echo "<form name='addserver' method='post' action='" . GQPBASE . "gqp_handle_server.php" . $aidlink . "&server=state'>";
@@ -136,7 +136,7 @@ if (dbrows($result) != 0) {
 
         echo "<label>" . $locale['gqp_admin_paneltemp'] . "</label>";
         echo "<select name='panel_template'>";
-        foreach (GameQ_ScanDir() as $key => $value) {
+        foreach (gameQ_ScanDir() as $key => $value) {
             echo "<option value=$value " . ($value == $data['panel_template'] ? 'selected' : '') . ">$value</option>";
         }
         echo "</select>";
@@ -149,9 +149,9 @@ if (dbrows($result) != 0) {
 }
 
 //list all supported games
-opentable($locale['gqp_admin_gamesupport1'] . GameQ_Games('', 'count') . $locale['gqp_admin_gamesupport2'] . "<span id = 'gqp_gl_btn' class = 'gqpfa-chevron-down'></span>");
+opentable($locale['gqp_admin_gamesupport1'] . gameQ_Games('', 'count') . $locale['gqp_admin_gamesupport2'] . "<span id = 'gqp_gl_btn' class = 'gqpfa-chevron-down'></span>");
 echo "<div id = 'gqp_gamelist' style = 'display:none;'>";
-echo GameQ_Games(FALSE, "list", $aidlink);
+echo gameQ_Games(FALSE, "list", $aidlink);
 echo "</div>";
 closetable();
 include_once GQPBASE . "copyright.php";

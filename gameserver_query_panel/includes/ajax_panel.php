@@ -30,7 +30,7 @@ while ($data = dbarray($result)) {
 }
 require_once GQPBASE . "templates/" . $template;
 
-$servers = GameQ_Create(GameQ_Servers());
+$servers = gameQ_Create(gameQ_Servers());
 if ($servers != FALSE) {
     foreach ($servers as $id => $data) {
         if (!$data['gq_online']) {
@@ -38,7 +38,7 @@ if ($servers != FALSE) {
             echo "<h5><span class='gqpfa-frown-o'></span> " . $data['gq_address'] . ":" . $data['gq_port'] . $locale['gqp_server_noresponse'] . "</h5>";
             echo "</div>\n";
         } else {
-            PanelOut($data, $id, $locale);
+            panelOut($data, $id, $locale);
         }
     }
 }

@@ -62,7 +62,7 @@ if (dbrows($result) != 0) {
     opentable($locale['gqp_admin_006']);
     echo "<div id='gqp_server_form'>";
     echo "<h5>" . $data['name'] . "</h5>";
-    $servers = GameQ_Create(GameQ_Servers($data['id']));
+    $servers = gameQ_Create(gameQ_Servers($data['id']));
     if ($servers != FALSE) {
         $result = dbquery("SELECT * FROM " . DB_GQP_SERVER_OPT . " WHERE server_id ='" . $data['id'] . "'");
         $saved_fields_panel = array();        

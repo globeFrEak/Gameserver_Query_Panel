@@ -30,7 +30,7 @@ if (file_exists(GQPBASE . "locale/" . $settings['locale'] . ".php")) {
     include_once GQPBASE . "locale/English.php";
 }
 
-function GameQ_Create($servers) {
+function gameQ_Create($servers) {
     if ($servers != FALSE) {
         $gq = new GameQ();
         $gq->addServers($servers);
@@ -43,7 +43,7 @@ function GameQ_Create($servers) {
     }
 }
 
-function GameQ_Servers($id = FALSE) {
+function gameQ_Servers($id = FALSE) {
     if (isset($id) && is_numeric($id) && $id != 0) {
         $id = mysql_real_escape_string($id);
         $result_detail = dbquery("SELECT id, address, port, game FROM " . DB_GQP_MAIN . "                             
@@ -66,7 +66,7 @@ function GameQ_Servers($id = FALSE) {
     }
 }
 
-function GameQ_Games($select = FALSE, $option = 'list', $aidlink = "") {
+function gameQ_Games($select = FALSE, $option = 'list', $aidlink = "") {
     require_once GQPBASE . "GameQ/GameQ.php";
     $protocols_path = GAMEQ_BASE . "gameq/protocols/";
     $dir = dir($protocols_path);
@@ -122,7 +122,7 @@ function GameQ_Games($select = FALSE, $option = 'list', $aidlink = "") {
     return $print;
 }
 
-function GameQ_GetInfo($game, $return = 'N') {
+function gameQ_GetInfo($game, $return = 'N') {
     require_once GQPBASE . "GameQ/GameQ.php";
     $protocols = array();
     $class_name = 'GameQ_Protocols_' . ucfirst(pathinfo($game, PATHINFO_FILENAME));
@@ -143,7 +143,7 @@ function GameQ_GetInfo($game, $return = 'N') {
     unset($class);
 }
 
-function GameQ_ScanDir() {
+function gameQ_ScanDir() {
     $result = array();
     $dir = scandir(GQPBASE . "templates");
     foreach ($dir as $key => $value) {
